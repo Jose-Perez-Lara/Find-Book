@@ -137,12 +137,11 @@ DB_PASSWORD=tu_contraseña
 ```
 
 ### Firebase
-Se debe de tener una cuenta en [firebase.google.com](https://firebase.google.com/),
-así como tambien ambos archivos de configuración:
-El del backend, debe de estar situado en -> 📁 api/storage/app/private,
-El del frontend, debe de estar situado en -> 📁 frontend/src
+Se debe de tener una cuenta en [firebase.google.com](https://firebase.google.com/),así como tambien ambos archivos de configuración:
+- El del backend, debe de estar situado en -> 📁 api/storage/app/private,
+- El del frontend, debe de estar situado en -> 📁 frontend/src
 
-Luego, configura los datos de conexión en el archivo `.env` de Laravel:
+- Luego, configura los datos de conexión en el archivo `.env` de Laravel:
 
 ```ini
 FIREBASE_CREDENTIALS=/ruta-completa-al-archivo
