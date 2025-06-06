@@ -1,5 +1,3 @@
-# Find-Book
-"""
 # 📘 Find&Book
 
 Aplicación web de reservas para negocios de servicios y clientes, desarrollada como Proyecto de Fin de Grado del ciclo **Desarrollo de Aplicaciones Web** (DAW).
@@ -82,20 +80,40 @@ Modelo relacional en PostgreSQL. Incluye:
 
 Disponible en `/database/schema.sql`
 
-## 🧪 Cómo ejecutar el proyecto
+🧪 Cómo ejecutar el proyecto
+🚀 Frontend (Vue + Vuetify)
+'''arduino
+cd frontend
+npm install
+npm run dev
 
-**Frontend (Vue)**
+⚙️ Backend (Laravel)
+'''bash
+Copiar
+Editar
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan serve
 
-cd frontend  
-npm install  
-npm run dev  
+🧱 Base de datos (PostgreSQL)
+Asegúrate de tener PostgreSQL instalado y corriendo.
 
-**Backend (Laravel)**
+Crea una base de datos llamada findandbook.
 
-cd api  
-composer install  
-php artisan migrate  
-php artisan serve  
+Configura los datos de conexión en el archivo .env de Laravel:
+
+'''ini
+Copiar
+Editar
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=findandbook
+DB_USERNAME=tu_usuario
+DB_PASSWORD=tu_contraseña 
 
 ## 👨‍🎓 Autor
 
