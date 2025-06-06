@@ -12,6 +12,7 @@ declare module 'vue' {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     CitasList: typeof import('./src/components/CitasList.vue')['default']
     EmpresaDashboard: typeof import('./src/components/EmpresaDashboard.vue')['default']
+    Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     RegisterEmpresaForm: typeof import('./src/components/RegisterEmpresaForm.vue')['default']

@@ -17,11 +17,16 @@ class Negocio extends Model
         'descripcion',
         'categoria',
         'imagen_portada',
-        'color_tema',
     ];
 
     public function usuario()
     {
         return $this->belongsTo(User::class);
+    }
+
+    
+    public function categoria()
+    {
+        return $this->belongsTo(Categorias::class);
     }
 }

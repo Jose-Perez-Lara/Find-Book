@@ -30,7 +30,7 @@ class NegocioController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $negocio,
+            $negocio,
         ], 201);
     }
 
@@ -48,6 +48,18 @@ class NegocioController extends Controller
     public function show(Negocio $negocio)
     {
         //
+    }
+
+
+    /**
+     * Funcion para traer los negocios por usuario
+     */
+    public function getNegociosByUser($userId){
+        $negocios = Negocio::with('categoria:id,id,nombre')
+        ->where('usuario_id', $userId)
+        ->get();
+
+        return response()->json($negocios, 200);
     }
 
     /**

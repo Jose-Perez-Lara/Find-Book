@@ -10,7 +10,6 @@ export const login = async (email, password) => {
 
   localStorage.setItem('token', token)
 
-  console.log('token: ' + token );
 
   const response = await axios.post(`${API_URL}/user`, {}, {
     headers: {
@@ -18,14 +17,22 @@ export const login = async (email, password) => {
     },
   })
 
-  console.log(...response.data.user);
-
   const user = {
     ...response.data.user, 
     token: token
   }
 
   return user
+}
+
+export const getUserWithToken = async () =>{
+  const token = getToken()
+  const response = await axios.post(`${API_URL}/user`, {}, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  return response.data.user
 }
 
 export const register = async (user, uid, password) =>{

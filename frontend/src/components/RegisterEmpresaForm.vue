@@ -46,9 +46,12 @@
               prepend-inner-icon="mdi-storefront"
               required
             />
-            <v-text-field
-              v-model="business.categoria"
+            <v-select
+              v-model="business.categoria_id"
+              :items="categorias.data"
               label="Categoría"
+              item-title="nombre"
+              item-value="id"
               prepend-inner-icon="mdi-tag"
               required
             />
@@ -60,7 +63,6 @@
               rows="3"
               required
             />
-
             <v-text-field
               v-model="password"
               label="Contraseña"
@@ -103,6 +105,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/firebase'
 import { registerNegocio } from '@/services/authService'
 import { useRouter } from 'vue-router'
+import CategoriaService from '@/services/CategoriaService'
 
 const router = useRouter()
 const business = ref({})
@@ -111,6 +114,7 @@ const confirmPassword = ref('')
 const showPassword = ref(false)
 const showConfirmPassword = ref(false)
 const valid = ref(false)
+const categorias = ref([])
 
 const emailRules = [
   v => !!v || 'El correo es requerido',
@@ -137,6 +141,12 @@ const submitForm = async () => {
     console.error('Error al registrar empresa:', error)
   }
 }
+
+onMounted(()=>{
+  CategoriaService.getCategorias().then(({data})=>{
+    categorias.value = data 
+  })
+})
 </script>
 
 <style scoped>

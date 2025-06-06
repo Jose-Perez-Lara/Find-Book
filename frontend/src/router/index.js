@@ -14,10 +14,18 @@ const router = createRouter({
   routes: setupLayouts(routes),
 })
 
+const publicPages = ['/login', '/register', '/register-empresa', '/']
+
+
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isAuthenticated()) {
-    next('/login') // Redirige si no hay token
-  } else {
+
+  const isPublic = publicPages.includes(to.path)
+  const authRequired = !isPublic
+  const loggedIn = !!localStorage.getItem('token')
+
+  if (authRequired && !loggedIn) {
+    next('/login')
+  }else {
     next()
   }
 })

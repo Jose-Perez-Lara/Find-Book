@@ -14,15 +14,16 @@ return new class extends Migration
          Schema::create('negocios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('usuario_id');
+            $table->unsignedBigInteger('categoria_id');
             $table->string('nombre');
             $table->text('descripcion')->nullable();
-            $table->string('categoria')->nullable();
             $table->string('imagen_portada')->nullable();
             $table->string('color_tema')->nullable();
             $table->boolean('verificado')->default(false);
             $table->timestamps();
 
             $table->foreign('usuario_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('categoria_id')->references('id')->on('categorias')->onDelete('cascade');
         });
     }
     

@@ -75,7 +75,7 @@ class AuthController extends Controller
             $verifiedIdToken = $this->auth->verifyIdToken($idToken);
             $uid = $verifiedIdToken->claims()->get('sub');
 
-            $user = User::where('firebase_uid', $uid)->get();
+            $user = User::where('firebase_uid', $uid)->first();
 
             return response()->json([
                 'status' => 'success',
