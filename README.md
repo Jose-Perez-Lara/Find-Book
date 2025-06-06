@@ -59,14 +59,12 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Reservas activas
   - Historial
   - Perfil
-  - Mensajes
 
 - **Panel empresa**
   - Gestión de servicios
   - Citas recibidas
   - Personalización del negocio
   - Calendario de disponibilidad
-  - Mensajes
 
 ---
 
