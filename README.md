@@ -14,14 +14,12 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Buscar negocios
   - Reservar servicios
   - Consultar historial
-  - Acceder al chat con empresas
 
 - **Empresa**
   - Publicar servicios
-  - Personalizar perfil (colores, imágenes, datos)
+  - Personalizar su negocio
   - Configurar disponibilidad
   - Ver y gestionar citas recibidas
-  - Chat con clientes
 
 ---
 
