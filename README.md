@@ -1,6 +1,6 @@
 # 📘 Find&Book
 
-Aplicación web de reservas para negocios de servicios y clientes, desarrollada como Proyecto de Fin de Grado del ciclo **Desarrollo de Aplicaciones Web** (DAW).
+Aplicación web de reservas para negocios de servicios y clientes, desarrollada como Proyecto de Fin de Grado del ciclo **Desarrollo de Aplicaciones Web**.
 
 ## 📌 Descripción
 
@@ -14,12 +14,14 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Buscar negocios
   - Reservar servicios
   - Consultar historial
+  - Mensajes
 
 - **Empresa**
   - Publicar servicios
   - Personalizar su negocio
   - Configurar disponibilidad
   - Ver y gestionar citas recibidas
+  - Mensajes
 
 ---
 
@@ -59,14 +61,14 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Reservas activas
   - Historial
   - Perfil
-  - Mensajes
+  - Chats con los negocios
 
 - **Panel empresa**
   - Gestión de servicios
   - Citas recibidas
   - Personalización del negocio
   - Calendario de disponibilidad
-  - Mensajes
+  - Chats con sus clientes
 
 ---
 
@@ -86,7 +88,6 @@ Modelo relacional en PostgreSQL. Incluye:
 - Servicios
 - Citas
 - Mensajes
-- Vistas y procedimientos
 
 Disponible en `/database/schema.sql`
 
