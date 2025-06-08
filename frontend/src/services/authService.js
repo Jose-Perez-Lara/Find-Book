@@ -8,8 +8,6 @@ export const login = async (email, password) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password)
   const token = await userCredential.user.getIdToken()
 
-  localStorage.setItem('token', token)
-
 
   const response = await axios.post(`${API_URL}/user`, {}, {
     headers: {
@@ -26,7 +24,7 @@ export const login = async (email, password) => {
 }
 
 export const getUserWithToken = async () =>{
-  const token = getToken()
+  const token = await getToken()
   const response = await axios.post(`${API_URL}/user`, {}, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -71,10 +69,16 @@ export const logout = () => {
   localStorage.removeItem('token')
 }
 
-export const getToken = () => {
-  return localStorage.getItem('token')
-}
 
-export const isAuthenticated = () => {
-  return !!getToken()
+export const getToken = async (forceRefresh = false) => {
+  const user = auth.currentUser
+
+  if (user) {
+    return await user.getIdToken(forceRefresh)
+  }
+  return null
+}
+export const isAuthenticated = async () => {
+  const token = await getToken()
+  return !!token
 }

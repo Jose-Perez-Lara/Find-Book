@@ -38,7 +38,7 @@ class AuthController extends Controller
                 'password' => $request->password,
                 'telefono' => $request->telefono,
                 'rol_id' => $request->rol_id,
-                'verificado' => true,
+                'verificado' => false,
             ]);
 
             return response()->json($usuario, 201);

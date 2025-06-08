@@ -3,7 +3,7 @@ import { getToken } from './authService'
 
 const API_URL = 'http://127.0.0.1:8000/api'
 
-const token = getToken()
+const token = await getToken()
 
 export default{
     getServices(){

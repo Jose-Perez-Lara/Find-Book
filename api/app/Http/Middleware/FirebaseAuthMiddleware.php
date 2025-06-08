@@ -30,7 +30,7 @@ class FirebaseAuthMiddleware
         $token = $request->bearerToken();
 
         if (!$token) {
-            return response()->json(['error_message' => 'Unauthorized'], 401);
+            return response()->json(['error_message' => 'There is no token'], 401);
         }
 
         try {
@@ -45,7 +45,7 @@ class FirebaseAuthMiddleware
             });
             
         } catch (Exception $e) {
-            return response()->json(['error_message' => 'Unauthorized'], 401);
+            return response()->json(['error_message' => $e->getMessage()], 401);
         }
         return $next($request);
     }

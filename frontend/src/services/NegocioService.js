@@ -7,16 +7,16 @@ const API_URL = 'http://127.0.0.1:8000/api'
 const token = ref(null)
 
 export default{
-    getNegociosByUser (userId){
-        token.value = getToken()
+    async getNegociosByUser (userId){
+        token.value = await getToken()
         return axios.get(`${API_URL}/users/${userId}/negocios`,{headers: {
             Authorization: `Bearer ${token.value}`,
         },})
         
     },
 
-    updateNegocio(id, newData) {
-        token.value = getToken()
+    async updateNegocio(id, newData) {
+        token.value = await getToken()
         return axios.patch(`${API_URL}/negocios/${id}`, newData, {
         headers: {
             Authorization: `Bearer ${token.value}`
@@ -24,8 +24,8 @@ export default{
         })
     },
 
-    getAllNegocios() {
-        token.value = getToken()
+    async getAllNegocios() {
+        token.value = await getToken()
         return axios.get(`${API_URL}/negocios`, {
             headers: {
             Authorization: `Bearer ${token.value}`,

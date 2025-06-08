@@ -1,6 +1,5 @@
 <template>
   <v-container fluid class="pa-0" style="background-color: #f7fafb; min-height: 100vh;">
-    <!-- Hero Section -->
     <v-container class="hero-section pa-12 mb-12" rounded="lg" elevation="6">
       <v-row align="center" justify="center" class="text-center">
         <v-col cols="12" md="8" lg="6">
@@ -19,7 +18,6 @@
       </v-row>
     </v-container>
 
-    <!-- Categorías -->
     <v-container class="mx-auto" style="max-width: 1500px;">
       <h2 class="text-h5 mb-6" style="color:#347c88; font-weight: 600;">Categorías Populares</h2>
       <v-row dense justify="center">
@@ -51,7 +49,6 @@
       </v-row>
     </v-container>
 
-    <!-- Negocios destacados -->
     <v-container class="py-8" style="background-color: #eaf2f3; border-radius: 1rem;">
       <h2 class="text-h5 mb-6" style="color:#347c88; font-weight: 600;">Negocios Destacados</h2>
       <v-row dense>
