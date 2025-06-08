@@ -36,7 +36,14 @@
               required
             ></v-text-field>
 
-            <v-btn class="mt-4" color="primary" block @click="submit" :disabled="!valid">
+            <v-btn
+              class="mt-4"
+              color="primary"
+              block
+              @click="submit"
+              :disabled="!valid || loading"
+              :loading="loading"
+            >
               Iniciar sesión
             </v-btn>
 
@@ -48,46 +55,62 @@
             </div>
           </v-form>
         </v-card>
+
+        <v-snackbar v-model="errorSnackbar" color="error" top>
+          {{ errorMessage }}
+          <template v-slot:action>
+            <v-btn text @click="errorSnackbar = false">Cerrar</v-btn>
+          </template>
+        </v-snackbar>
       </v-col>
     </v-row>
   </v-container>
 </template>
-  
-<script setup>
-  import { ref } from 'vue'
-  import { useAuthStore } from '@/stores/auth'
-  import { useRouter } from 'vue-router'
-  
-  
-  const auth = useAuthStore()
-  const router = useRouter()
-  const email = ref('')
-  const password = ref('')
-  const showPassword = ref(false)
-  const valid = ref(false)
-  
-  const emailRules = [
-    v => !!v || 'El correo es requerido',
-    v => /.+@.+\..+/.test(v) || 'Correo inválido',
-  ]
-  
-  const passwordRules = [
-    v => !!v || 'La contraseña es requerida',
-    v => v.length >= 6 || 'Mínimo 6 caracteres',
-  ]
-  
-  const submit = async () => {
-    if (!valid.value) return
 
-    try {
-      await auth.login(email.value, password.value)
-      router.push('/dashboard')
-    } catch (error) {
-      console.error('Login error:', error)
-    }
+<script setup>
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+const email = ref('')
+const password = ref('')
+const showPassword = ref(false)
+const valid = ref(false)
+const loading = ref(false)
+
+const errorSnackbar = ref(false)
+const errorMessage = ref('')
+
+const emailRules = [
+  v => !!v || 'El correo es requerido',
+  v => /.+@.+\..+/.test(v) || 'Correo inválido',
+]
+
+const passwordRules = [
+  v => !!v || 'La contraseña es requerida',
+  v => v.length >= 6 || 'Mínimo 6 caracteres',
+]
+
+const submit = async () => {
+  if (!valid.value) return
+
+  loading.value = true
+  try {
+    await auth.login(email.value, password.value)
+    router.push('/dashboard')
+  } catch (error) {
+    errorMessage.value = 'Error al iniciar sesión. Verifica tus credenciales.'
+    errorSnackbar.value = true
+    console.error('Login error:', error)
+  } finally {
+    loading.value = false
   }
+}
 </script>
-  
+
 <style scoped>
 .register-link {
   color: #1976d2;
@@ -100,4 +123,3 @@
   text-decoration: underline;
 }
 </style>
-  

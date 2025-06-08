@@ -12,11 +12,9 @@ import App from './App.vue'
 
 // Composables
 import { createApp } from 'vue'
-import { setupAuthListener } from './authInit'
 
 const app = createApp(App)
 
 registerPlugins(app)
-setupAuthListener()
 
 app.mount('#app')

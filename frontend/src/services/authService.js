@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '@/firebase'
+import { signOut } from 'firebase/auth'
 
 const API_URL = 'http://127.0.0.1:8000/api'
 
@@ -8,6 +9,7 @@ export const login = async (email, password) => {
   const userCredential = await signInWithEmailAndPassword(auth, email, password)
   const token = await userCredential.user.getIdToken()
 
+  localStorage.setItem('token', token)
 
   const response = await axios.post(`${API_URL}/user`, {}, {
     headers: {
@@ -65,14 +67,15 @@ export const registerNegocio = async (negocio, uid, password) =>{
 }
 
 
-export const logout = () => {
-  localStorage.removeItem('token')
+export const logout = async () => {
+  await signOut(auth)
 }
 
 
 export const getToken = async (forceRefresh = false) => {
   const user = auth.currentUser
-
+  console.log('getToken:')
+  console.log(user)
   if (user) {
     return await user.getIdToken(forceRefresh)
   }

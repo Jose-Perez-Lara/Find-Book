@@ -3,8 +3,8 @@ import { login as apiLogin, logout as apiLogout, getToken, getUserWithToken } fr
 import NegocioService from '@/services/NegocioService'
 
 export const useAuthStore = defineStore('auth', {
-  state: () => ({
-    token: getToken() || '',
+  state: () =>  ({
+    token: localStorage.getItem('token') || '',
     user: null, 
     negocio:null
   }),

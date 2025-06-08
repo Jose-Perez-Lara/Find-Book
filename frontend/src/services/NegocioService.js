@@ -1,36 +1,19 @@
-import axios from 'axios'
-import { getToken } from './authService'
-import { ref } from 'vue'
+import api from '@/axios'
 
-const API_URL = 'http://127.0.0.1:8000/api'
+export default {
+  getNegociosByUser(userId) {
+    return api.get(`/users/${userId}/negocios`)
+  },
 
-const token = ref(null)
+  getNegociosById(negocioId) {
+    return api.get(`/negocios/${negocioId}`)
+  },
 
-export default{
-    async getNegociosByUser (userId){
-        token.value = await getToken()
-        return axios.get(`${API_URL}/users/${userId}/negocios`,{headers: {
-            Authorization: `Bearer ${token.value}`,
-        },})
-        
-    },
+  updateNegocio(id, newData) {
+    return api.patch(`/negocios/${id}`, newData)
+  },
 
-    async updateNegocio(id, newData) {
-        token.value = await getToken()
-        return axios.patch(`${API_URL}/negocios/${id}`, newData, {
-        headers: {
-            Authorization: `Bearer ${token.value}`
-        }
-        })
-    },
-
-    async getAllNegocios() {
-        token.value = await getToken()
-        return axios.get(`${API_URL}/negocios`, {
-            headers: {
-            Authorization: `Bearer ${token.value}`,
-            },
-        })
-    }
-
+  getAllNegocios() {
+    return api.get('/negocios')
+  }
 }
