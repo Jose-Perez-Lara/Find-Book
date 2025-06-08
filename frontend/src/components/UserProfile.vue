@@ -1,48 +1,78 @@
 <template>
-  <v-container class="py-8" fluid>
-    <v-card class="mx-auto mb-4" max-width="600" color="#FFFFFF" theme="light">
-      <v-card-title class="d-flex justify-space-between align-center" color="teal lighten-3">
-        Perfil de {{ profile.name }}
-        <v-btn variant="flat" color="#347c88" size="small" @click="dialogPerfil = true">
-          Editar Perfil
-        </v-btn>
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-list dense>
-          <v-list-item>
-            <v-list-item-title>Correo</v-list-item-title>
-            <v-list-item-subtitle>{{ profile.email }}</v-list-item-subtitle>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>Teléfono</v-list-item-title>
-            <v-list-item-subtitle>{{ profile.telefono }}</v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-    </v-card>
+  <v-container class="py-10" fluid>
+    <v-row justify="center" class="mb-6">
+      <v-col cols="12" md="8" class="text-center">
+        <h2 class="text-h4 font-weight-medium">Bienvenido de nuevo, <span class="text-teal darken-2">{{ profile.name }}</span></h2>
+      </v-col>
+    </v-row>
 
-    <v-card v-if="authStore.isNegocio" class="mx-auto" max-width="600" color="#FFFFFF" theme="light">
-      <v-card-title class="d-flex justify-space-between align-center" color="blue lighten-4">
-        Negocio: {{ negocio.nombre }}
-        <v-btn variant="flat" color="#347c88" size="small" @click="dialogNegocio = true">
-          Editar Negocio
-        </v-btn>
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-list dense>
-          <v-list-item>
-            <v-list-item-title>Descripción</v-list-item-title>
-            <v-list-item-subtitle>{{ negocio.descripcion }}</v-list-item-subtitle>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-title>Categoría</v-list-item-title>
-            <v-list-item-subtitle>{{ negocio.categoria?.nombre }}</v-list-item-subtitle>
-          </v-list-item>
-        </v-list>
-      </v-card-text>
-    </v-card>
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <!-- Card Perfil -->
+        <v-card elevation="6" rounded class="pa-6 mb-8" color="#fafafa">
+          <v-card-title class="d-flex justify-space-between align-center pa-0 mb-4">
+            <h3 class="text-subtitle-1 font-weight-bold teal--text">Tu Perfil</h3>
+            <v-btn variant="outlined" color="teal" small @click="dialogPerfil = true" rounded>
+              <v-icon left size="18">mdi-account-edit</v-icon> Editar Perfil
+            </v-btn>
+          </v-card-title>
+          
+          <div style="height: 2px; background-color: #47a8a8;"></div>
+
+          <v-list dense>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-body-2 font-weight-medium">Correo</v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">{{ profile.email }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-body-2 font-weight-medium">Teléfono</v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">{{ profile.telefono }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+
+        <!-- Card Negocio -->
+        <v-card v-if="authStore.isNegocio" elevation="6" rounded class="pa-6" color="#f9fbfc">
+          <v-card-title class="d-flex justify-space-between align-center pa-0 mb-4">
+            <div>
+              <h3 class="text-subtitle-1 font-weight-bold blue--text">Negocio: {{ negocio.nombre }}</h3>
+            </div>
+            <div class="d-flex gap-3">
+              <v-btn variant="outlined" color="blue" small @click="dialogNegocio = true" rounded>
+                <v-icon left size="18">mdi-store-edit</v-icon> Editar Negocio
+              </v-btn>
+              <v-btn variant="outlined" color="blue" small @click="dialogHorarios = true" rounded>
+                <v-icon left size="18">mdi-calendar-clock</v-icon> Editar Horarios
+              </v-btn>
+            </div>
+          </v-card-title>
+          
+          <div style="height: 2px; background-color: #6794a7;"></div>
+
+          <v-list dense>
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-body-2 font-weight-medium">Descripción</v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">{{ negocio.descripcion }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-body-2 font-weight-medium">Categoría</v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">{{ negocio.categoria?.nombre }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
+    </v-row>
+
 
     <v-dialog v-model="dialogPerfil" max-width="500">
       <v-card>
@@ -85,79 +115,217 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-dialog v-model="dialogHorarios" max-width="600">
+      <v-card>
+        <v-card-title class="text-h6" color="#347c88">Editar Horarios</v-card-title>
+        <v-card-text>
+          <v-list>
+            <v-list-item
+              v-for="(horario, index) in horarios"
+              :key="index"
+              class="pa-0"
+            >
+              <v-list-item-content class="py-2">
+                <v-row align="center">
+                  <v-col cols="12" sm="4">
+                    <v-checkbox
+                      v-model="horario.activo"
+                      :label="diasSemana[horario.dia_semana - 1]"
+                      hide-details
+                      density="compact"
+                    />
+                  </v-col>
+                  <v-col cols="6" sm="4">
+                    <v-text-field
+                      v-model="horario.hora_inicio"
+                      label="Inicio"
+                      type="time"
+                      dense
+                      hide-details
+                      :disabled="!horario.activo"
+                    />
+                  </v-col>
+                  <v-col cols="6" sm="4">
+                    <v-text-field
+                      v-model="horario.hora_fin"
+                      label="Fin"
+                      type="time"
+                      dense
+                      hide-details
+                      :disabled="!horario.activo"
+                    />
+                  </v-col>
+                </v-row>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text @click="dialogHorarios = false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="#347c88" @click="saveHorarios">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+
   </v-container>
+  <v-snackbar
+    v-model="snackbar.show"
+    :color="snackbar.color"
+    timeout="3000"
+  >
+    {{ snackbar.text }}
+  </v-snackbar>
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-import CategoriaService from '@/services/CategoriaService'
+  import { ref, watch, onMounted } from 'vue';
+  import { useAuthStore } from '@/stores/auth';
+  import CategoriaService from '@/services/CategoriaService';
+  import HorarioNegocioService from '@/services/HorarioNegocioService';
+  import NegocioService from '@/services/NegocioService';
+  import PerfilService from '@/services/PerfilService';
 
-const authStore = useAuthStore()
-const profile = ref({})
-const negocio = ref({})
-const categorias = ref([])
-const dialogPerfil = ref(false)
-const dialogNegocio = ref(false)
+  const authStore = useAuthStore()
+  const profile = ref({})
+  const negocio = ref({})
+  const categorias = ref([])
+  const dialogPerfil = ref(false)
+  const dialogNegocio = ref(false)
+  const dialogHorarios = ref(false)
+  const horarios = ref([])
 
-const formPerfil = ref({
-  name: '',
-  email: '',
-  telefono: ''
-})
 
-const formNegocio = ref({
-  nombre: '',
-  descripcion: '',
-  categoria: '',
-  color_tema: ''
-})
+  const formPerfil = ref({
+    name: '',
+    email: '',
+    telefono: ''
+  })
 
-watch(
-  () => authStore.user,
-  () => {
+  const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+
+
+  const snackbar = ref({
+    show: false,
+    text: '',
+    color: 'green-lighten-1'
+  })
+  
+  function showSnackbar(text, color = 'green-lighten-1') {
+    snackbar.value.text = text
+    snackbar.value.color = color
+    snackbar.value.show = true
+  }
+
+
+  const formNegocio = ref({
+    nombre: '',
+    descripcion: '',
+    categoria: '',
+    color_tema: ''
+  })
+
+  watch(
+    () => authStore.user,
+    () => {
+      profile.value = { ...authStore.user }
+      negocio.value = { ...authStore.negocio }
+      setFormValues()
+    }
+  )
+
+  onMounted(async () => {
     profile.value = { ...authStore.user }
     negocio.value = { ...authStore.negocio }
-    setFormValues()
-  }
-)
-
-onMounted(async () => {
-  profile.value = { ...authStore.user }
-  negocio.value = { ...authStore.negocio }
-  
-  await CategoriaService.getCategorias().then(({data})=>{
-    categorias.value = data[0]
     
+    await CategoriaService.getCategorias().then(({data})=>{
+      categorias.value = data[0]
+      
+    })
+     inicializarHorariosPorDefecto()
+
+    setFormValues()
+
+    if (authStore.isNegocio && authStore.negocio?.id) {
+      const { data: horariosDb } = await HorarioNegocioService.getHorarios(authStore.negocio.id)
+
+      horariosDb.forEach(h => {
+        const target = horarios.value.find(x => x.dia_semana === h.dia_semana)
+        if (target) {
+          target.activo = true
+          target.hora_inicio = h.hora_inicio
+          target.hora_fin = h.hora_fin
+        }
+      })
+    }
   })
-  setFormValues()
-})
 
-function setFormValues() {
-  if (!profile.value) return
-
-  formPerfil.value = {
-    name: profile.value.name || '',
-    email: profile.value.email || '',
-    telefono: profile.value.telefono || ''
+  function inicializarHorariosPorDefecto() {
+    horarios.value = Array.from({ length: 7 }, (_, i) => ({
+      dia_semana: i + 1,
+      activo: false,
+      hora_inicio: '09:00',
+      hora_fin: '17:00'
+    }))
   }
 
-  if (negocio.value) {
-    formNegocio.value = {
-      nombre: negocio.value.nombre || '',
-      descripcion: negocio.value.descripcion || '',
-      categoria: negocio.value.categoria_id || '',
+  function setFormValues() {
+    if (!profile.value) return
+
+    formPerfil.value = {
+      name: profile.value.name || '',
+      email: profile.value.email || '',
+      telefono: profile.value.telefono || ''
+    }
+
+    if (negocio.value) {
+      formNegocio.value = {
+        nombre: negocio.value.nombre || '',
+        descripcion: negocio.value.descripcion || '',
+        categoria: negocio.value.categoria_id || '',
+      }
     }
   }
-}
 
-function savePerfil() {
-  console.log('Guardando perfil:', formPerfil.value)
-  dialogPerfil.value = false
-}
 
-function saveNegocio() {
-  console.log('Guardando negocio:', formNegocio.value)
-  dialogNegocio.value = false
-}
+  async function savePerfil() {
+    try {
+      await PerfilService.updateUser(profile.value.id, formPerfil.value)
+      authStore.loadUser()
+      showSnackbar('Perfil actualizado correctamente', 'green-lighten-1')
+    } catch (error) {
+      console.error('Error al actualizar perfil:', error)
+      showSnackbar('Error al actualizar perfil', 'error')
+    }
+    dialogPerfil.value = false
+  }
+
+
+  async function saveNegocio() {
+    
+    
+    try {
+      await NegocioService.updateNegocio(authStore.negocio?.id, formNegocio.value)
+      showSnackbar('Negocio actualizado correctamente', 'green-lighten-1')
+    } catch (error) {
+      console.error('Error al actualizar negocio:', error)
+      showSnackbar('Error al actualizar negocio', 'error')
+    }
+    dialogNegocio.value = false
+  }
+
+  async function saveHorarios() {
+    try {
+      console.log(horarios.value)
+      const horariosActivos = horarios.value.filter(h => h.activo === true)
+      console.log(horariosActivos)
+      await HorarioNegocioService.guardarHorariosMasivo(authStore.negocio.id, horariosActivos)
+      dialogHorarios.value = false
+      showSnackbar('Horarios guardados correctamente', 'green-lighten-1')
+    } catch (err) {
+      console.error('Error guardando horarios:', err)
+      showSnackbar('Error al guardar los horarios', 'error')
+    }
+  }
 </script>

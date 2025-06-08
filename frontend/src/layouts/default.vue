@@ -14,6 +14,6 @@
 
   const route = useRoute()
 
-  const hideOnRoutes = ['/login', '/register']
+  const hideOnRoutes = ['/login', '/register', '/register-empresa']
   const showHeader = computed(() => !hideOnRoutes.includes(route.path))
 </script>

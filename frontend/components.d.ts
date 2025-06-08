@@ -14,6 +14,7 @@ declare module 'vue' {
     EmpresaDashboard: typeof import('./src/components/EmpresaDashboard.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    HomeView: typeof import('./src/components/HomeView.vue')['default']
     LoginForm: typeof import('./src/components/LoginForm.vue')['default']
     RegisterEmpresaForm: typeof import('./src/components/RegisterEmpresaForm.vue')['default']
     RegisterForm: typeof import('./src/components/RegisterForm.vue')['default']

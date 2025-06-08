@@ -13,5 +13,24 @@ export default{
             Authorization: `Bearer ${token.value}`,
         },})
         
+    },
+
+    updateNegocio(id, newData) {
+        token.value = getToken()
+        return axios.patch(`${API_URL}/negocios/${id}`, newData, {
+        headers: {
+            Authorization: `Bearer ${token.value}`
+        }
+        })
+    },
+
+    getAllNegocios() {
+        token.value = getToken()
+        return axios.get(`${API_URL}/negocios`, {
+            headers: {
+            Authorization: `Bearer ${token.value}`,
+            },
+        })
     }
+
 }

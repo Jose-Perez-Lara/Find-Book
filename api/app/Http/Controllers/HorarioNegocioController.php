@@ -10,7 +10,7 @@ use App\Models\Servicio;
 
 class HorarioNegocioController extends Controller
 {
-    public function index($negocio_id)
+    public function show($negocio_id)
     {
         return HorarioNegocio::where('negocio_id', $negocio_id)->get();
     }

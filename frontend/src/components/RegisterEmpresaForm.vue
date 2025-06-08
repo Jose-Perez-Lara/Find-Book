@@ -100,53 +100,53 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '@/firebase'
-import { registerNegocio } from '@/services/authService'
-import { useRouter } from 'vue-router'
-import CategoriaService from '@/services/CategoriaService'
+  import { ref } from 'vue'
+  import { createUserWithEmailAndPassword } from 'firebase/auth'
+  import { auth } from '@/firebase'
+  import { registerNegocio } from '@/services/authService'
+  import { useRouter } from 'vue-router'
+  import CategoriaService from '@/services/CategoriaService'
 
-const router = useRouter()
-const business = ref({})
-const password = ref('')
-const confirmPassword = ref('')
-const showPassword = ref(false)
-const showConfirmPassword = ref(false)
-const valid = ref(false)
-const categorias = ref([])
+  const router = useRouter()
+  const business = ref({})
+  const password = ref('')
+  const confirmPassword = ref('')
+  const showPassword = ref(false)
+  const showConfirmPassword = ref(false)
+  const valid = ref(false)
+  const categorias = ref([])
 
-const emailRules = [
-  v => !!v || 'El correo es requerido',
-  v => /.+@.+\..+/.test(v) || 'Correo inválido',
-]
-const passwordRules = [
-  v => !!v || 'La contraseña es requerida',
-  v => v.length >= 6 || 'Mínimo 6 caracteres',
-]
-const confirmPasswordRule = [
-  v => v === password.value || 'Las contraseñas deben coincidir',
-]
+  const emailRules = [
+    v => !!v || 'El correo es requerido',
+    v => /.+@.+\..+/.test(v) || 'Correo inválido',
+  ]
+  const passwordRules = [
+    v => !!v || 'La contraseña es requerida',
+    v => v.length >= 6 || 'Mínimo 6 caracteres',
+  ]
+  const confirmPasswordRule = [
+    v => v === password.value || 'Las contraseñas deben coincidir',
+  ]
 
-const submitForm = async () => {
-  if (!valid.value) return
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, business.value.email, password.value)
-    const firebaseUser = cred.user
+  const submitForm = async () => {
+    if (!valid.value) return
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, business.value.email, password.value)
+      const firebaseUser = cred.user
 
-    await registerNegocio(business.value, firebaseUser.uid, password.value)
+      await registerNegocio(business.value, firebaseUser.uid, password.value)
 
-    router.push('/login') 
-  } catch (error) {
-    console.error('Error al registrar empresa:', error)
+      router.push('/login') 
+    } catch (error) {
+      console.error('Error al registrar empresa:', error)
+    }
   }
-}
 
-onMounted(()=>{
-  CategoriaService.getCategorias().then(({data})=>{
-    categorias.value = data 
+  onMounted(()=>{
+    CategoriaService.getCategorias().then(({data})=>{
+      categorias.value = data 
+    })
   })
-})
 </script>
 
 <style scoped>

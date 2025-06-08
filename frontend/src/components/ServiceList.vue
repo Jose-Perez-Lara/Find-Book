@@ -1,26 +1,44 @@
 <template>
-  <v-card>
-    <v-card-title class="d-flex justify-space-between align-center">
-      <span>Lista de Servicios</span>
-      <v-btn color="#347c88" @click="dialog = true">Agregar Servicio</v-btn>
+  <v-card class="pa-6 mb-8" elevation="6" rounded="xl" color="#f0f4f5">
+    <v-card-title
+      class="d-flex justify-space-between align-center pa-0"
+      style="margin-bottom: 10px;"
+    >
+      <span class="text-title-1 font-weight-bold teal--text">Lista de Servicios</span>
+      <v-btn
+        color="#347c88"
+        rounded
+        class="ml-4"
+        style="min-width: 180px;"
+        @click="dialog = true"
+      >
+        <v-icon left size="18">mdi-plus</v-icon>
+        Agregar Servicio
+      </v-btn>
     </v-card-title>
+    <div style="height: 2px; background-color: #347c88;"></div>
 
-    <v-card-text>
-      <v-list>
+    <v-card-text class="pt-2 pb-6">
+      <v-list bg-color="#f0f4f5">
         <v-list-item
           v-for="service in services"
           :key="service.id"
+          class="mb-4 rounded-xl"
+          style="border: 1px solid #d2e4e6; padding: 16px;"
         >
-          <template #title>
-            {{ service.nombre }} - {{ service.precio }}€
-          </template>
+          <v-list-item-content>
+            <v-list-item-title class="text-body-1 font-weight-bold mb-1">
+              {{ service.nombre }} - {{ service.precio }}€
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-subtitle-2 mb-2">
+              {{ service.descripcion }}
+            </v-list-item-subtitle>
+            <div class="text-caption text-grey-darken-1 mb-2">
+              Duración: {{ service.duracion }} min
+            </div>
+          </v-list-item-content>
 
-          <template #subtitle>
-            {{ service.descripcion }}<br>
-            <span class="text-caption">Duración: {{ service.duracion }} min</span>
-          </template>
-
-          <template #append>
+          <v-list-item-action class="d-flex gap-2">
             <v-btn
               icon
               size="small"
@@ -39,16 +57,18 @@
             >
               <v-icon>mdi-delete</v-icon>
             </v-btn>
-          </template>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </v-card-text>
+  </v-card>
 
-      <v-dialog
-        v-model="dialog" 
-        max-width="500"
-        transition="dialog-bottom-transition"
-      >
+
+    <v-dialog
+      v-model="dialog" 
+      max-width="500"
+      transition="dialog-bottom-transition"
+    >
       <v-card>
         <v-card-title>
           <span class="text-h6" >{{ modoEdicion ? 'Actualizar Servicio' : 'Agregar Servicio' }}</span>
@@ -110,7 +130,6 @@
     >
       {{ snackbar.text }}
     </v-snackbar>
-  </v-card>
 </template>
 
 <script setup>

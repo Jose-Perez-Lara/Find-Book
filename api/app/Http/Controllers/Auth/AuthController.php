@@ -51,6 +51,41 @@ class AuthController extends Controller
         
     }
 
+    public function updateUser(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'name' => 'sometimes|string|max:255',
+                'email' => 'sometimes|email|unique:users,email,' . $id,
+                'telefono' => 'nullable|string|max:20',
+            ]);
+
+            $user = User::findOrFail($id);
+
+            if ($request->has('name')) {
+                $user->name = $request->name;
+            }
+            if ($request->has('email')) {
+                $user->email = $request->email;
+            }
+            if ($request->has('telefono')) {
+                $user->telefono = $request->telefono;
+            }
+
+            $user->save();
+
+            return response()->json([
+                'status' => 'success',
+                'user' => $user,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
 
     /**
      * Login

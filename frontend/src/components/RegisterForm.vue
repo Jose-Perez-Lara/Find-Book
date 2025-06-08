@@ -15,7 +15,7 @@
                 </div>
 
                 <v-card-title class="text-h3 mb-4 ">Registrate</v-card-title>
-                <v-form @submit.prevent="submitForm">
+                <v-form ref="form" v-model="valid" @submit.prevent="submitForm">
                     <v-text-field
                     v-model="user.email"
                     label="Correo electrónico"
@@ -41,7 +41,6 @@
                     <v-text-field
                     v-model="password"
                     label="Contraseña"
-                    type="password"
                     :rules="passwordRules"
                     prepend-inner-icon="mdi-lock"
                     :type="showPassword ? 'text' : 'password'"
@@ -53,7 +52,6 @@
                     <v-text-field
                     v-model="confirmPassword"
                     label="Confirmar contraseña"
-                    type="password"
                     :rules="confirmPasswordRule"
                     prepend-inner-icon="mdi-lock"
                     :type="showConfirmPassword ? 'text' : 'password'"
@@ -82,9 +80,18 @@
     import { auth } from '@/firebase';
     import { ref } from 'vue';
     import { register } from '@/services/authService';
+    import { useRouter } from 'vue-router';
 
-    const user = ref({})
-    const password = ref('');
+    const router = useRouter()
+    const form = ref(null)
+    const valid = ref(false)
+    const user = ref({
+        email: '',
+        name: '',
+        telefono: '',
+    })
+
+    const password = ref('')
     const confirmPassword = ref('')
     const showPassword = ref(false)
     const showConfirmPassword = ref(false)
@@ -93,28 +100,29 @@
         v => !!v || 'El correo es requerido',
         v => /.+@.+\..+/.test(v) || 'Correo inválido',
     ]
-    
+
     const passwordRules = [
         v => !!v || 'La contraseña es requerida',
         v => v.length >= 6 || 'Mínimo 6 caracteres',
     ]
-    
+
     const confirmPasswordRule = [
         v => v === password.value || 'Las contraseñas deben coincidir',
-    ];
-    
+    ]
+
     const submitForm = async () => {
         if (!valid.value) return
 
-        const cred = await createUserWithEmailAndPassword(auth, user.value.email, password.value)
-        const firebaseUser = cred.user
-        try{
+        try {
+            const cred = await createUserWithEmailAndPassword(auth, user.value.email, password.value)
+            const firebaseUser = cred.user
             await register(user.value, firebaseUser.uid, password.value)
             router.push('/dashboard')
         } catch (error) {
-            console.error('Login error:', error)
+            console.error('Registro error:', error)
         }
-        };
+    }
+
 </script>
 
 <style scoped>

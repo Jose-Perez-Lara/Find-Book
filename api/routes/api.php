@@ -19,3 +19,4 @@ Route::resource('citas', CitasController::class)->middleware('firebase.auth');
 Route::get('/users/{userId}/negocios', [NegocioController::class, 'getNegociosByUser'])->middleware('firebase.auth');
 Route::resource('horarios-negocio', HorarioNegocioController::class)->middleware('firebase.auth');
 Route::get('/negocios/{id}/huecos-disponibles', [HorarioNegocioController::class, 'huecosDisponibles'])->middleware('firebase.auth');
+Route::patch('/users/{userId}', [AuthController::class, 'updateUser'])->middleware('firebase.auth');

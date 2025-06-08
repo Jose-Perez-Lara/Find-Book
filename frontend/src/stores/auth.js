@@ -34,6 +34,10 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    async loadUser(){
+      this.user = await getUserWithToken()
+    },
+
     logout() {
       apiLogout()
       this.token = ''

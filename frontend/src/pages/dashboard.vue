@@ -1,18 +1,44 @@
 <template>
-  <v-main>  
-     <v-navigation-drawer
-        expand-on-hover
-        rail
-      >
-       <v-list density="compact" nav>
-          <v-list-item v-if="authStore.isNegocio" @click="setActiveView('services')" prepend-icon="mdi-folder" title="Servicios" />
-          <v-list-item @click="setActiveView('appointments')" prepend-icon="mdi-calendar" title="Citas" />
-          <v-list-item @click="setActiveView('profile')" prepend-icon="mdi-account" title="Perfil" />
+  <v-layout>
+    <v-navigation-drawer
+      v-model="drawer"
+      :permanent="!mobile"
+      :temporary="mobile"
+      :rail="!mobile"
+      expand-on-hover
+      app
+    >
+      <v-list density="compact" nav>
+        <v-list-item
+          v-if="authStore.isNegocio"
+          @click="setActiveView('services')"
+          prepend-icon="mdi-folder"
+          title="Servicios"
+        />
+        <v-list-item
+          @click="setActiveView('appointments')"
+          prepend-icon="mdi-calendar"
+          title="Citas"
+        />
+        <v-list-item
+          @click="setActiveView('profile')"
+          prepend-icon="mdi-account"
+          title="Perfil"
+        />
       </v-list>
     </v-navigation-drawer>
+
+    <v-main height="90vh">
+      <!--para movil -->
+      <v-app-bar flat color="transparent" elevation="0">
+        <v-app-bar-nav-icon v-if="mobile" @click="drawer = !drawer" />
+      </v-app-bar>
+
+      <v-container fluid>
         <component :is="activeView" />
+      </v-container>
     </v-main>
-    
+  </v-layout>
 </template>
 
 <script setup>
@@ -20,8 +46,10 @@
   import ServiceList from '@/components/ServiceList.vue';
   import CitasList from '@/components/CitasList.vue';
   import UserProfile from '@/components/UserProfile.vue';
-  import { ref, onBeforeMount, markRaw } from 'vue';
+  import { ref, markRaw, onBeforeMount, computed } from 'vue';
+  import { useDisplay } from 'vuetify';
 
+  const drawer = ref(true);
   const activeView = ref(markRaw(UserProfile));
 
   function setActiveView(view) {
@@ -38,11 +66,15 @@
       default:
         activeView.value = markRaw(UserProfile);
     }
+
+    if (mobile.value) drawer.value = false;
   }
 
-  const authStore = useAuthStore()
+  const authStore = useAuthStore();
+  const { mdAndDown } = useDisplay();
+  const mobile = computed(() => mdAndDown.value);
 
-  onBeforeMount( async ()=>{
-    await authStore.initialize()
-  })
+  onBeforeMount(async () => {
+    await authStore.initialize();
+  });
 </script>
