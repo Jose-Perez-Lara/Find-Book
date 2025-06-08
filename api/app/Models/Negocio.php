@@ -24,7 +24,11 @@ class Negocio extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+    public function comentarios()
+    {
+        return $this->hasMany(Comentario::class);
+    }
+
     public function categoria()
     {
         return $this->belongsTo(Categorias::class);

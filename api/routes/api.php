@@ -20,3 +20,5 @@ Route::get('/users/{userId}/negocios', [NegocioController::class, 'getNegociosBy
 Route::resource('horarios-negocio', HorarioNegocioController::class)->middleware('firebase.auth');
 Route::get('/negocios/{id}/huecos-disponibles', [HorarioNegocioController::class, 'huecosDisponibles'])->middleware('firebase.auth');
 Route::patch('/users/{userId}', [AuthController::class, 'updateUser'])->middleware('firebase.auth');
+Route::get('/negocios/{negocio}/comentarios', [ComentarioController::class, 'index']);
+Route::post('/negocios/{negocio}/comentarios', [ComentarioController::class, 'store'])->middleware('firebase.auth');
