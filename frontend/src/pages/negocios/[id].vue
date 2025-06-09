@@ -7,7 +7,8 @@
           :src="'http://localhost:8000/'+negocio.imagen_portada"
           class="mb-4 rounded-lg"
           height="200"
-          contain
+          cover
+          style="filter: brightness(60%);"
         ></v-img>
         <h1 class="text-h5 font-weight-bold mb-2">{{ negocio.nombre }}</h1>
         <p class="text-subtitle-1 text-grey">{{ negocio.direccion }}</p>

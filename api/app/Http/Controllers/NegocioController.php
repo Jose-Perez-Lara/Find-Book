@@ -133,7 +133,7 @@ class NegocioController extends Controller
     public function updateImage(Request $request, Negocio $negocio)
     {
         $request->validate([
-            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192',
         ]);
 
         if ($request->hasFile('imagen')) {
