@@ -92,6 +92,17 @@
           <p><strong>Propietario:</strong> {{ negocio.usuario.name }}</p>
           <p><strong>Teléfono:</strong> {{ negocio.usuario.telefono }}</p>
           <p><strong>Email:</strong> {{ negocio.usuario.email }}</p>
+          <div class="bg-white p-4 rounded-xl shadow">
+              <p><strong>Ubicación:</strong>{{ negocio.direccion }}</p>
+              <iframe
+                  v-if="negocio?.direccion"
+                  class="w-full rounded-xl"
+                  height="200"
+                  style="border:0"
+                  :src="`https://www.google.com/maps?q=${encodeURIComponent(negocio.direccion)}&output=embed`"
+                  allowfullscreen
+              ></iframe>
+          </div>
         </v-card>
       </v-col>
     </v-row>

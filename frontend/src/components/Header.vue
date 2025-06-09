@@ -21,19 +21,17 @@
             </v-btn>
         </v-toolbar-title>
 
-        <v-btn text to="/explorar" class="mx-2">Explorar</v-btn>
         <template v-if="authStore.isAuthenticated">
             <v-btn to="/reservas" class="mx-2">Mis Reservas</v-btn>
             <v-btn v-if="!authStore.isNegocio" text to="/favoritos" class="mx-2">Negocios Favoritos</v-btn>
-            <v-btn v-if="authStore.isNegocio" text to="/servicios" class="mx-2">Mis servicios</v-btn>
 
             <v-btn icon="mdi-account" to="/dashboard"/>
             <v-btn icon="mdi-logout" @click="logout"/>
         </template>
 
         <template v-else>
-        <v-btn text to="/login">Login</v-btn>
-        <v-btn text to="/register">Registrarse</v-btn>
+            <v-btn text to="/login">Login</v-btn>
+            <v-btn text to="/register">Registrarse</v-btn>
         </template>
         
     </v-app-bar>

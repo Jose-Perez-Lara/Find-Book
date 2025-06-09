@@ -90,7 +90,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="dialogNegocio" max-width="500">
+    <v-dialog v-model="dialogNegocio" max-width="700">
       <v-card>
         <v-card-title class="text-h6" color="#347c88">Editar Negocio</v-card-title>
         <v-card-text>
@@ -107,6 +107,15 @@
             required
             clearable
           />
+
+          <v-text-field
+            v-model="formNegocio.direccion"
+            label="Dirección"
+            prepend-inner-icon="mdi-map-marker"
+            color="#347c88"
+          />
+
+          <div id="map-negocio" style="height: 300px; margin-top: 15px; border-radius: 8px; overflow: hidden;"></div>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -115,6 +124,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <v-dialog v-model="dialogHorarios" max-width="700">
       <v-card>
         <v-card-title class="text-h6" color="#347c88">Editar Horarios</v-card-title>
@@ -211,6 +221,10 @@
   import HorarioNegocioService from '@/services/HorarioNegocioService';
   import NegocioService from '@/services/NegocioService';
   import PerfilService from '@/services/PerfilService';
+  import L from 'leaflet'
+  import 'leaflet/dist/leaflet.css'
+  import { nextTick } from 'vue'
+
 
   const authStore = useAuthStore()
   const profile = ref({})
@@ -220,6 +234,9 @@
   const dialogNegocio = ref(false)
   const dialogHorarios = ref(false)
   const horarios = ref([])
+  const map = ref(null)
+  const marker = ref(null)
+  const searchQuery = ref('')
 
 
   const formPerfil = ref({
@@ -331,7 +348,11 @@
         nombre: negocio.value.nombre || '',
         descripcion: negocio.value.descripcion || '',
         categoria: negocio.value.categoria_id || '',
+        direccion: negocio.value.direccion || '',
+        latitud: negocio.value.latitud || 37.3886, 
+        longitud: negocio.value.longitud || -5.9823
       }
+
     }
   }
 
@@ -347,6 +368,31 @@
     }
     dialogPerfil.value = false
   }
+
+
+  async function actualizarDireccionDesdeCoords(lat, lng) {
+    try {
+      const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`);
+      const data = await response.json();
+
+      if (data && data.display_name) {
+        formNegocio.value.direccion = data.display_name;
+      }
+    } catch (error) {
+      console.error("Error obteniendo dirección inversa:", error);
+    }
+  }
+
+
+  watch(dialogNegocio, (val) => {
+  if (val) {
+    nextTick(() => {
+      setTimeout(() => {
+        inicializarMapaNegocio()
+      }, 400)
+    })
+  }
+})
 
 
   async function saveNegocio() {
@@ -390,4 +436,35 @@
   }
 
 
+  function inicializarMapaNegocio() {
+    const lat = formNegocio.value.latitud || 37.3886;
+    const lng = formNegocio.value.longitud || -5.9823;
+
+    if (map.value) {
+      map.value.remove();
+    }
+
+    map.value = L.map("map-negocio").setView([lat, lng], 14);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map.value);
+
+    marker.value = L.marker([lat, lng], { draggable: true }).addTo(map.value);
+
+    marker.value.on("dragend", function (e) {
+      const pos = e.target.getLatLng();
+      formNegocio.value.latitud = pos.lat;
+      formNegocio.value.longitud = pos.lng;
+      actualizarDireccionDesdeCoords(pos.lat, pos.lng);
+    });
+
+    map.value.on("click", function (e) {
+      const { lat, lng } = e.latlng;
+      formNegocio.value.latitud = lat;
+      formNegocio.value.longitud = lng;
+      marker.value.setLatLng([lat, lng]);
+      actualizarDireccionDesdeCoords(lat, lng);
+    });
+  }
 </script>

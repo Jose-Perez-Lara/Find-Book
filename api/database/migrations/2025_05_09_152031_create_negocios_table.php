@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('nombre');
             $table->text('descripcion')->nullable();
             $table->string('imagen_portada')->nullable();
-            $table->string('color_tema')->nullable();
             $table->boolean('verificado')->default(false);
             $table->timestamps();
 

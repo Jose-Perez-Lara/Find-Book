@@ -87,11 +87,13 @@ class NegocioController extends Controller
 
     public function update(Request $request, Negocio $negocio)
     {
-        // Validar los datos recibidos
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
             'categoria' => 'nullable|exists:categorias,id',
+            'direccion' => 'nullable|string|max:500',
+            'latitud' => 'nullable|numeric',
+            'longitud' => 'nullable|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -100,11 +102,23 @@ class NegocioController extends Controller
             ], 422);
         }
 
-        // Actualizar el negocio
         $negocio->nombre = $request->input('nombre');
         $negocio->descripcion = $request->input('descripcion');
+
         if ($request->filled('categoria')) {
             $negocio->categoria_id = $request->input('categoria');
+        }
+
+        if ($request->filled('direccion')) {
+            $negocio->direccion = $request->input('direccion');
+        }
+
+        if ($request->filled('latitud')) {
+            $negocio->latitud = $request->input('latitud');
+        }
+
+        if ($request->filled('longitud')) {
+            $negocio->longitud = $request->input('longitud');
         }
 
         $negocio->save();
@@ -114,6 +128,7 @@ class NegocioController extends Controller
             'negocio' => $negocio
         ]);
     }
+
 
     /**
      * Remove the specified resource from storage.

@@ -10,7 +10,7 @@ class CitaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $negocioId = $request->query('negocio_id');
         $usuarioId = $request->query('usuario_id');
@@ -23,11 +23,12 @@ class CitaController extends Controller
             $citas = Cita::where('cliente_id', $usuarioId)
                         ->with(['cliente', 'servicio'])
                         ->get();
+        } else {
+            return response()->json(['error' => 'Falta negocio_id o usuario_id'], 400);
         }
 
         return response()->json($citas, 200);
     }
-
     /**
      * Show the form for creating a new resource.
      */
