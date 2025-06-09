@@ -6,10 +6,11 @@ export default {
     return response.data
   },
 
-  async agregarComentario(negocioId, comentario, calificacion) {
+  async agregarComentario(negocioId, comentario, calificacion, userId) {
     const response = await api.post(`/negocios/${negocioId}/comentarios`, {
       comentario,
       calificacion,
+      userId
     })
     return response.data
   },

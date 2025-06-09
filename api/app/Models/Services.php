@@ -20,5 +20,8 @@ class Services extends Model
         'imagen'
     ];
     
-
+    public function negocio()
+    {
+        return $this->belongsTo(Negocio::class, 'negocio_id');
+    }
 }

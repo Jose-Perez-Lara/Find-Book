@@ -46,7 +46,7 @@
             </v-list-item-content>
             <v-list-item-action>
               <v-rating
-                :value="comentario.calificacion"
+                :model-value="comentario.calificacion"
                 color="amber"
                 dense
                 readonly
@@ -277,7 +277,6 @@ async function confirmarReserva() {
 }
 async function verificarReservas() {
   if (!authStore.isAuthenticated) return
-
   try {
     const { data } = await CitaService.getCitasByNegocioAndUser(negocio.value.id, authStore.user.id)
     tieneReservas.value = data.length > 0
@@ -319,7 +318,7 @@ async function enviarComentario() {
       route.params.id,
       nuevoComentario.value.comentario,
       nuevoComentario.value.calificacion,
-      authStore.token
+      authStore.user.id
     )
     nuevoComentario.value = { comentario: '', calificacion: null }
     await cargarComentarios()
@@ -332,10 +331,10 @@ async function enviarComentario() {
 }
 
 onMounted(async () => {
+  await cargarNegocio()
+  await cargarComentarios()
   if(authStore.isAuthenticated){
     await verificarReservas()
   }
-  await cargarNegocio()
-  await cargarComentarios()
 })
 </script>

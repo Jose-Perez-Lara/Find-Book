@@ -21,15 +21,15 @@ class ComentarioController extends Controller
 
     public function store(Request $request, $negocioId)
     {
-
         $request->validate([
             'comentario' => 'required|string|max:1000',
             'calificacion' => 'nullable|integer|min:1|max:5',
+            'userId' => 'required|exists:users,id'
         ]);
 
         $negocio = Negocio::findOrFail($negocioId);
 
-        $usuario = User::where('firebase_uid', $uid)->firstOrFail();
+        $usuario = User::findOrFail($request->userId);
 
         $comentario = Comentario::create([
             'negocio_id' => $negocio->id,
@@ -39,6 +39,6 @@ class ComentarioController extends Controller
         ]);
 
         return response()->json($comentario, 201);
-
     }
+
 }

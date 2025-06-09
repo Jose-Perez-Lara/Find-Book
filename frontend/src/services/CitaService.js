@@ -12,5 +12,11 @@ export default {
     },
     getCitasUsuario(userId){
         return api.get('/citas/?usuario_id=' + userId )
+    },
+    update(id, data) {
+        return api.put(`/citas/${id}`, data)
+    },
+    delete(id){
+        return api.delete('/citas/' + id)
     }
 }

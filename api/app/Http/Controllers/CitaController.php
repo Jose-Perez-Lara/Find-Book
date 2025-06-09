@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cita;
+use App\Models\Services;
 use Illuminate\Http\Request;
 
 class CitaController extends Controller
@@ -18,10 +19,11 @@ class CitaController extends Controller
         if ($negocioId) {
             $citas = Cita::whereHas('servicio', function ($query) use ($negocioId) {
                 $query->where('negocio_id', $negocioId);
-            })->with(['cliente', 'servicio'])->get();
+            })->with(['cliente', 'servicio.negocio.usuario']) 
+            ->get();
         } elseif ($usuarioId) {
             $citas = Cita::where('cliente_id', $usuarioId)
-                        ->with(['cliente', 'servicio'])
+                        ->with(['cliente', 'servicio.negocio.usuario']) 
                         ->get();
         } else {
             return response()->json(['error' => 'Falta negocio_id o usuario_id'], 400);
@@ -29,6 +31,7 @@ class CitaController extends Controller
 
         return response()->json($citas, 200);
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -108,12 +111,13 @@ class CitaController extends Controller
 
     public function getByNegocioAndUsuario($negocioId, $userId)
     {
-        $servicioIds = Servicio::where('negocio_id', $request->negocio_id)->pluck('id');
+        $servicioIds = Services::where('negocio_id', $negocioId)->pluck('id');
 
         $citas = Cita::whereIn('servicio_id', $servicioIds)
-                    ->where('user_id', $request->user_id)
+                    ->where('cliente_id', $userId)
                     ->get();
 
         return response()->json($citas);
-        }
+    }
+
 }
