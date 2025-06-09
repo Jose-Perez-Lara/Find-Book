@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('horario_negocios', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('negocio_id');
-            // 1 = lunes, ..., 7 = domingo
             $table->unsignedTinyInteger('dia_semana');
             $table->time('hora_inicio');
             $table->time('hora_fin');

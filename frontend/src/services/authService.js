@@ -74,8 +74,6 @@ export const logout = async () => {
 
 export const getToken = async (forceRefresh = false) => {
   const user = auth.currentUser
-  console.log('getToken:')
-  console.log(user)
   if (user) {
     return await user.getIdToken(forceRefresh)
   }

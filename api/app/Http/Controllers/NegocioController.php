@@ -57,7 +57,7 @@ class NegocioController extends Controller
      */
     public function show(Negocio $negocio)
     {
-        $negocio->load('categoria', 'comentarios.usuario');
+        $negocio->load('categoria', 'comentarios.usuario', 'usuario');
         return response()->json($negocio, 200);
     }
 

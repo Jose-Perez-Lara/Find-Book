@@ -42,11 +42,10 @@ class CitaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'cliente_id' => 'required|exists:clientes,id',
-            'servicio_id' => 'required|exists:servicios,id',
+            'cliente_id' => 'required|exists:users,id',
+            'servicio_id' => 'required|exists:services,id',
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
-            'estado' => 'required|string|max:50',
         ]);
 
         $cita = Cita::create($validated);
@@ -105,4 +104,15 @@ class CitaController extends Controller
             'message' => 'Cita eliminada correctamente',
         ], 200);
     }
+
+    public function getByNegocioAndUsuario($negocioId, $userId)
+    {
+        $servicioIds = Servicio::where('negocio_id', $request->negocio_id)->pluck('id');
+
+        $citas = Cita::whereIn('servicio_id', $servicioIds)
+                    ->where('user_id', $request->user_id)
+                    ->get();
+
+        return response()->json($citas);
+        }
 }

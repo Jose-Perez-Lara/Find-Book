@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('cliente_id')->constrained()->onDelete('cascade');
-            $table->foreignId('servicio_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('cliente_id');
+            $table->unsignedBigInteger('servicio_id');
             $table->date('fecha');
             $table->time('hora');
             $table->string('estado')->default('pendiente');
+            $table->foreign('cliente_id')->references('id')->on('users');
+            $table->foreign('servicio_id')->references('id')->on('services');
             $table->timestamps();
         });
     }

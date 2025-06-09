@@ -43,10 +43,10 @@
               <h3 class="text-subtitle-1 font-weight-bold blue--text">Negocio: {{ negocio.nombre }}</h3>
             </div>
             <div class="d-flex gap-3">
-              <v-btn variant="outlined" color="blue" small @click="dialogNegocio = true" rounded>
+              <v-btn variant="outlined" color="#347c88" small @click="dialogNegocio = true" rounded>
                 <v-icon left size="18">mdi-store-edit</v-icon> Editar Negocio
               </v-btn>
-              <v-btn variant="outlined" color="blue" small @click="dialogHorarios = true" rounded>
+              <v-btn variant="outlined" color="#347c88" small @click="dialogHorarios = true" rounded>
                 <v-icon left size="18">mdi-calendar-clock</v-icon> Editar Horarios
               </v-btn>
             </div>
@@ -115,58 +115,83 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="dialogHorarios" max-width="600">
+    <v-dialog v-model="dialogHorarios" max-width="700">
       <v-card>
         <v-card-title class="text-h6" color="#347c88">Editar Horarios</v-card-title>
         <v-card-text>
           <v-list>
             <v-list-item
-              v-for="(horario, index) in horarios"
+              v-for="(dia, index) in horarios"
               :key="index"
               class="pa-0"
             >
               <v-list-item-content class="py-2">
                 <v-row align="center">
-                  <v-col cols="12" sm="4">
+                  <v-col cols="12">
                     <v-checkbox
-                      v-model="horario.activo"
-                      :label="diasSemana[horario.dia_semana - 1]"
+                      v-model="dia.activo"
+                      :label="diasSemana[dia.dia_semana - 1]"
                       hide-details
                       density="compact"
                     />
                   </v-col>
-                  <v-col cols="6" sm="4">
-                    <v-text-field
-                      v-model="horario.hora_inicio"
-                      label="Inicio"
-                      type="time"
-                      dense
-                      hide-details
-                      :disabled="!horario.activo"
-                    />
-                  </v-col>
-                  <v-col cols="6" sm="4">
-                    <v-text-field
-                      v-model="horario.hora_fin"
-                      label="Fin"
-                      type="time"
-                      dense
-                      hide-details
-                      :disabled="!horario.activo"
-                    />
-                  </v-col>
                 </v-row>
+
+                <!-- Mostrar bloques solo si el día está activo -->
+                <div v-if="dia.activo">
+                  <div
+                    v-for="(bloque, i) in dia.bloques"
+                    :key="i"
+                  >
+                    <v-row dense>
+                      <v-col cols="5">
+                        <v-text-field
+                          v-model="bloque.hora_inicio"
+                          label="Inicio"
+                          type="time"
+                          dense
+                          hide-details
+                        />
+                      </v-col>
+                      <v-col cols="5">
+                        <v-text-field
+                          v-model="bloque.hora_fin"
+                          label="Fin"
+                          type="time"
+                          dense
+                          hide-details
+                        />
+                      </v-col>
+                      <v-col cols="2" class="text-right">
+                        <v-btn icon @click="eliminarBloque(dia.dia_semana, i)">
+                          <v-icon>mdi-delete</v-icon>
+                        </v-btn>
+                      </v-col>
+                    </v-row>
+                  </div>
+
+                  <v-btn
+                    small
+                    color="#347c88"
+                    class="mt-2"
+                    @click="agregarBloque(dia.dia_semana)"
+                  >
+                    <v-icon left>mdi-plus</v-icon>
+                    Agregar bloque
+                  </v-btn>
+                </div>
               </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn text @click="dialogHorarios = false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn text @click="dialogHorarios = false" color="blue-grey-lighten-1">Cancelar</v-btn>
           <v-btn color="#347c88" @click="saveHorarios">Guardar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+
 
 
   </v-container>
@@ -226,10 +251,33 @@
     color_tema: ''
   })
 
+  function agregarBloque(dia_semana) {
+    const dia = horarios.value.find(d => d.dia_semana === dia_semana)
+    if (dia) {
+      dia.bloques.push({
+        hora_inicio: '09:00',
+        hora_fin: '17:00'
+      })
+    }
+  }
+
+  function eliminarBloque(dia_semana, index) {
+    const dia = horarios.value.find(d => d.dia_semana === dia_semana)
+    if (dia && dia.bloques[index]) {
+      dia.bloques.splice(index, 1)
+    }
+  }
+
   watch(
     () => authStore.user,
     () => {
       profile.value = { ...authStore.user }
+      setFormValues()
+    }
+  )
+  watch(
+    () => authStore.negocio,
+    () => {
       negocio.value = { ...authStore.negocio }
       setFormValues()
     }
@@ -238,26 +286,26 @@
   onMounted(async () => {
     profile.value = { ...authStore.user }
     negocio.value = { ...authStore.negocio }
-    
-    await CategoriaService.getCategorias().then(({data})=>{
-      categorias.value = data[0]
-      
-    })
-     inicializarHorariosPorDefecto()
 
+    await CategoriaService.getCategorias().then(({ data }) => {
+      categorias.value = data[0]
+    })
+
+    inicializarHorariosPorDefecto()
     setFormValues()
 
     if (authStore.isNegocio && authStore.negocio?.id) {
       const { data: horariosDb } = await HorarioNegocioService.getHorarios(authStore.negocio.id)
-
-      horariosDb.forEach(h => {
-        const target = horarios.value.find(x => x.dia_semana === h.dia_semana)
-        if (target) {
-          target.activo = true
-          target.hora_inicio = h.hora_inicio
-          target.hora_fin = h.hora_fin
+      for (const h of horariosDb) {
+        const dia = horarios.value.find(d => d.dia_semana === h.dia_semana)
+        if (dia) {
+          dia.activo = true
+          dia.bloques.push({
+            hora_inicio: h.hora_inicio,
+            hora_fin: h.hora_fin
+          })
         }
-      })
+      }
     }
   })
 
@@ -265,8 +313,7 @@
     horarios.value = Array.from({ length: 7 }, (_, i) => ({
       dia_semana: i + 1,
       activo: false,
-      hora_inicio: '09:00',
-      hora_fin: '17:00'
+      bloques: [] // sin bloques al inicio
     }))
   }
 
@@ -303,8 +350,6 @@
 
 
   async function saveNegocio() {
-    
-    
     try {
       await NegocioService.updateNegocio(authStore.negocio?.id, formNegocio.value)
       showSnackbar('Negocio actualizado correctamente', 'green-lighten-1')
@@ -315,11 +360,26 @@
     dialogNegocio.value = false
   }
 
+  function formatoHoraSinSegundos(hora) {
+    return hora?.slice(0, 5) // solo: "HH:mm", por que si no los horarios activos me llegan como "HH:mm:ss"
+  }
+
   async function saveHorarios() {
     try {
-      console.log(horarios.value)
-      const horariosActivos = horarios.value.filter(h => h.activo === true)
-      console.log(horariosActivos)
+      const horariosActivos = []
+
+      horarios.value.forEach(dia => {
+        if (dia.activo) {
+          dia.bloques.forEach(bloque => {
+            horariosActivos.push({
+              dia_semana: dia.dia_semana,
+              hora_inicio: formatoHoraSinSegundos(bloque.hora_inicio),
+              hora_fin: formatoHoraSinSegundos(bloque.hora_fin)
+            })
+          })
+        }
+      })
+
       await HorarioNegocioService.guardarHorariosMasivo(authStore.negocio.id, horariosActivos)
       dialogHorarios.value = false
       showSnackbar('Horarios guardados correctamente', 'green-lighten-1')
@@ -328,4 +388,6 @@
       showSnackbar('Error al guardar los horarios', 'error')
     }
   }
+
+
 </script>
