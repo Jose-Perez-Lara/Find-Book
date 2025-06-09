@@ -8,7 +8,6 @@
 
     <v-row justify="center">
       <v-col cols="12" md="8">
-        <!-- Card Perfil -->
         <v-card elevation="6" rounded class="pa-6 mb-8" color="#fafafa">
           <v-card-title class="d-flex justify-space-between align-center pa-0 mb-4">
             <h3 class="text-subtitle-1 font-weight-bold teal--text">Tu Perfil</h3>
@@ -36,7 +35,6 @@
           </v-list>
         </v-card>
 
-        <!-- Card Negocio -->
         <v-card v-if="authStore.isNegocio" elevation="6" rounded class="pa-6" color="#f9fbfc">
           <v-card-title class="d-flex justify-space-between align-center pa-0 mb-4">
             <div>
@@ -48,6 +46,9 @@
               </v-btn>
               <v-btn variant="outlined" color="#347c88" small @click="dialogHorarios = true" rounded>
                 <v-icon left size="18">mdi-calendar-clock</v-icon> Editar Horarios
+              </v-btn>
+              <v-btn variant="outlined" color="#347c88" small @click="dialogImagen = true" rounded>
+                <v-icon left size="18">mdi-image-plus</v-icon> Agregar Imagen
               </v-btn>
             </div>
           </v-card-title>
@@ -124,7 +125,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
     <v-dialog v-model="dialogHorarios" max-width="700">
       <v-card>
         <v-card-title class="text-h6" color="#347c88">Editar Horarios</v-card-title>
@@ -147,7 +147,6 @@
                   </v-col>
                 </v-row>
 
-                <!-- Mostrar bloques solo si el día está activo -->
                 <div v-if="dia.activo">
                   <div
                     v-for="(bloque, i) in dia.bloques"
@@ -201,8 +200,26 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-
+    <v-dialog v-model="dialogImagen" max-width="500">
+      <v-card>
+        <v-card-title class="text-h6" color="#347c88">Agregar Imagen al Negocio</v-card-title>
+        <v-card-text>
+          <v-file-input
+            v-model="imagenNegocio"
+            label="Selecciona una imagen"
+            accept="image/*"
+            show-size
+            clearable
+            prepend-icon="mdi-image"
+          />
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn text @click="dialogImagen = false" color="grey lighten-1">Cancelar</v-btn>
+          <v-btn color="#347c88" @click="uploadImagen">Subir Imagen</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
 
   </v-container>
   <v-snackbar
@@ -236,9 +253,11 @@
   const horarios = ref([])
   const map = ref(null)
   const marker = ref(null)
-  const searchQuery = ref('')
+  const dialogImagen = ref(false)
+  const imagenNegocio = ref(null)
 
-
+  
+  
   const formPerfil = ref({
     name: '',
     email: '',
@@ -246,8 +265,8 @@
   })
 
   const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-
-
+  
+  
   const snackbar = ref({
     show: false,
     text: '',
@@ -265,7 +284,9 @@
     nombre: '',
     descripcion: '',
     categoria: '',
-    color_tema: ''
+    direccion: '',
+    latitud: null,
+    longitud: null,
   })
 
   function agregarBloque(dia_semana) {
@@ -277,14 +298,14 @@
       })
     }
   }
-
+  
   function eliminarBloque(dia_semana, index) {
     const dia = horarios.value.find(d => d.dia_semana === dia_semana)
     if (dia && dia.bloques[index]) {
       dia.bloques.splice(index, 1)
     }
   }
-
+  
   watch(
     () => authStore.user,
     () => {
@@ -299,18 +320,18 @@
       setFormValues()
     }
   )
-
+  
   onMounted(async () => {
     profile.value = { ...authStore.user }
     negocio.value = { ...authStore.negocio }
-
+    
     await CategoriaService.getCategorias().then(({ data }) => {
       categorias.value = data[0]
     })
-
+    
     inicializarHorariosPorDefecto()
     setFormValues()
-
+    
     if (authStore.isNegocio && authStore.negocio?.id) {
       const { data: horariosDb } = await HorarioNegocioService.getHorarios(authStore.negocio.id)
       for (const h of horariosDb) {
@@ -325,6 +346,24 @@
       }
     }
   })
+  
+  async function uploadImagen() {
+    if (!imagenNegocio.value) {
+      showSnackbar('Por favor selecciona una imagen', 'error')
+      return
+    }
+
+    try {
+      await NegocioService.uploadImagen(negocio.value.id, imagenNegocio.value)
+      showSnackbar('Imagen subida correctamente', 'green-lighten-1')
+      dialogImagen.value = false
+      imagenNegocio.value = null
+    } catch (error) {
+      console.error('Error subiendo imagen:', error)
+      showSnackbar('Error al subir la imagen', 'error')
+    }
+  }
+
 
   function inicializarHorariosPorDefecto() {
     horarios.value = Array.from({ length: 7 }, (_, i) => ({
@@ -349,10 +388,9 @@
         descripcion: negocio.value.descripcion || '',
         categoria: negocio.value.categoria_id || '',
         direccion: negocio.value.direccion || '',
-        latitud: negocio.value.latitud || 37.3886, 
-        longitud: negocio.value.longitud || -5.9823
+        latitud: negocio.value.latitud || 37.3886,
+        longitud: negocio.value.longitud || -5.9823,
       }
-
     }
   }
 
@@ -395,15 +433,15 @@
 })
 
 
-  async function saveNegocio() {
+ async function saveNegocio() {
     try {
       await NegocioService.updateNegocio(authStore.negocio?.id, formNegocio.value)
       showSnackbar('Negocio actualizado correctamente', 'green-lighten-1')
+      dialogNegocio.value = false
     } catch (error) {
       console.error('Error al actualizar negocio:', error)
       showSnackbar('Error al actualizar negocio', 'error')
     }
-    dialogNegocio.value = false
   }
 
   function formatoHoraSinSegundos(hora) {

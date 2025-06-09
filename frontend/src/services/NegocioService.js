@@ -15,5 +15,14 @@ export default {
 
   getAllNegocios() {
     return api.get('/negocios')
+  },
+
+  uploadImagen(negocioId, file) {
+    const formData = new FormData()
+    formData.append('imagen', file)
+    return api.post(`/negocios/${negocioId}/imagen`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
   }
+
 }

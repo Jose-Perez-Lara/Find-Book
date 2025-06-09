@@ -130,6 +130,31 @@ class NegocioController extends Controller
     }
 
 
+    public function updateImage(Request $request, Negocio $negocio)
+    {
+        $request->validate([
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('imagen')) {
+            $imagePath = $request->file('imagen')->store('negocios', 'public');
+            $negocio->imagen_portada = 'storage/' . $imagePath;
+            $negocio->save();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Imagen actualizada con éxito',
+                'negocio' => $negocio
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => 'No se recibió archivo de imagen'
+        ], 400);
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */

@@ -2,7 +2,13 @@
   <v-container fluid class="pa-6">
     <v-row>
       <v-col cols="12" md="8">
-
+        <v-img
+          v-if="negocio.imagen_portada"
+          :src="'http://localhost:8000/'+negocio.imagen_portada"
+          class="mb-4 rounded-lg"
+          height="200"
+          contain
+        ></v-img>
         <h1 class="text-h5 font-weight-bold mb-2">{{ negocio.nombre }}</h1>
         <p class="text-subtitle-1 text-grey">{{ negocio.direccion }}</p>
         <p class="text-body-2 mb-4">{{ negocio.descripcion }}</p>

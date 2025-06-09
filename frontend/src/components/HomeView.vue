@@ -60,8 +60,8 @@
         >
           <v-card class="business-card rounded-lg elevation-3 d-flex flex-column">
             <v-img
-              v-if="negocio.imagen"
-              :src="negocio.imagen"
+              v-if="negocio.imagen_portada"
+              :src="'http://localhost:8000/'+negocio.imagen_portada"
               height="180px"
               class="rounded-t-lg"
             />

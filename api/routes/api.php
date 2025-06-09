@@ -24,3 +24,4 @@ Route::patch('/users/{userId}', [AuthController::class, 'updateUser'])->middlewa
 Route::get('/negocios/{negocio}/comentarios', [ComentarioController::class, 'index']);
 Route::post('/negocios/{negocio}/comentarios', [ComentarioController::class, 'store'])->middleware('firebase.auth');
 Route::get('/citas/negocio/{negocioId}/usuario/{userId}', [CitaController::class, 'getByNegocioAndUsuario']);
+Route::post('/negocios/{negocio}/imagen', [NegocioController::class, 'updateImage'])->middleware('firebase.auth');
