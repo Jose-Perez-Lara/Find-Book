@@ -14,14 +14,12 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Buscar negocios
   - Reservar servicios
   - Consultar historial
-  - Mensajes
 
 - **Empresa**
   - Publicar servicios
   - Personalizar su negocio
   - Configurar disponibilidad
   - Ver y gestionar citas recibidas
-  - Mensajes
 
 ---
 
@@ -61,14 +59,12 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Reservas activas
   - Historial
   - Perfil
-  - Chats con los negocios
 
 - **Panel empresa**
   - Gestión de servicios
   - Citas recibidas
   - Personalización del negocio
   - Calendario de disponibilidad
-  - Chats con sus clientes
 
 ---
 
@@ -87,9 +83,8 @@ Modelo relacional en PostgreSQL. Incluye:
 - Negocios
 - Servicios
 - Citas
-- Mensajes
+- Comentarios
 
-Disponible en `/database/schema.sql`
 
 ## 🧪 Cómo ejecutar el proyecto
 
@@ -101,7 +96,7 @@ npm install
 npm run dev
 ```
 
-La app quedará disponible en `http://localhost:5173`.
+La app quedará disponible en `http://localhost:3000`.
 
 ---
 
