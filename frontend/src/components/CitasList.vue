@@ -1,5 +1,7 @@
 <template>
-  <v-card>
+  <v-card
+    style="max-height: 70vh; overflow-y: auto;"
+  >
     <v-card-title class="text-h6">Listado de Citas</v-card-title>
     <v-card-text>
       <v-data-table

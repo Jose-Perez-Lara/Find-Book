@@ -1,5 +1,9 @@
 <template>
-  <v-container class="py-10" fluid>
+  <v-container 
+    class="py-10" 
+    fluid 
+    style="max-height: 70vh; overflow-y: auto;"
+  >
     <v-row justify="center" class="mb-6">
       <v-col cols="12" md="8" class="text-center">
         <h2 class="text-h4 font-weight-medium">Bienvenido de nuevo, <span class="text-teal darken-2">{{ profile.name }}</span></h2>
