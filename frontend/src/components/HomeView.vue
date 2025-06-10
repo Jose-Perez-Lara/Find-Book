@@ -4,10 +4,10 @@
       <v-row align="center" justify="center" class="text-center">
         <v-col cols="12" md="8" lg="6">
           <h1 class="display-2 font-weight-bold" style="color: #2c6b74;">Encuentra el mejor servicio para ti</h1>
-          <p class="subtitle-1 mb-6" style="color: #557c85;">Explora negocios</p>
+          <p class="subtitle-1 mb-6" style="color: #557c85;">Explora negocios y categorías</p>
           <v-text-field
             v-model="search"
-            label="Buscar negocios o servicios"
+            label="Buscar negocios o categorías"
             append-inner-icon="mdi-magnify"
             solo
             hide-details
@@ -115,7 +115,7 @@
   })
 
   const esFavorito = (negocioId) => {
-    const favorito = favoritosUser.value.find(favorito => favorito.negocio_id = negocioId)
+    const favorito = favoritosUser.value.find(favorito => favorito.negocio_id == negocioId)
     return favorito != undefined
   }
 
