@@ -49,31 +49,32 @@
       </v-row>
     </v-container>
 
-    <v-container class="py-8" style="background-color: #eaf2f3; border-radius: 1rem;">
-      <h2 class="text-h5 mb-6" style="color:#347c88; font-weight: 600;">Negocios Destacados</h2>
-      <v-row no-gutters justify="start" align="start">
+    <v-container class="py-4" style="background-color: #eaf2f3; border-radius: 1rem;">
+      <h2 class="text-h5 mb-4" style="color:#347c88; font-weight: 600;">Negocios Destacados</h2>
+      <v-row no-gutters justify="center" align="stretch">
         <v-col
           v-for="negocio in negociosFiltrados"
           :key="negocio.id"
-          cols="12" sm="6" md="4"
-          class="pa-2"
+          cols="12" sm="6" md="4" lg="3"
+          class="pa-2 d-flex align-center justify-center"
         >
-          <v-card class="business-card rounded-lg elevation-3 d-flex flex-column" style="height: 100%;">
+          <v-card class="business-card rounded-lg elevation-3 d-flex flex-column" style="height: 100%; width: 100%;">
             <v-img
               v-if="negocio.imagen_portada"
               :src="'http://localhost:8000/'+negocio.imagen_portada"
               height="180px"
               class="rounded-t-lg"
+              cover
             />
             <div v-else class="d-flex align-center justify-center" style="height: 180px; background-color: #cadfe1; color: #4f6e76; font-weight: bold;">
               Sin imagen
             </div>
-            <v-card-title class="text-h6" style="color: #2c6b74;">{{ negocio.nombre }}</v-card-title>
-            <v-card-subtitle style="color: #4f6e76;">{{ negocio.categoria?.nombre }}</v-card-subtitle>
-            <v-card-text class="flex-grow-1" style="color: #556f75;">
+            <v-card-title class="text-h6 px-4 pt-3 pb-1" style="color: #2c6b74;">{{ negocio.nombre }}</v-card-title>
+            <v-card-subtitle class="px-4 pt-0 pb-2" style="color: #4f6e76;">{{ negocio.categoria?.nombre }}</v-card-subtitle>
+            <v-card-text class="flex-grow-1 px-4 pt-0 pb-3" style="color: #556f75;">
               {{ negocio.descripcion?.slice(0, 100) || 'Descripción no disponible' }}
             </v-card-text>
-            <v-card-actions>
+            <v-card-actions class="px-4 pb-3">
               <v-spacer />
               <v-btn @click="selectFavorito(negocio.id)" color="red" :icon="esFavorito(negocio.id) ? 'mdi-heart' : 'mdi-heart-outline'"></v-btn>
               <v-btn color="#347c88" text @click="verNegocio(negocio.id)" class="font-weight-medium">
