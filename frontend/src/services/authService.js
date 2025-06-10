@@ -60,7 +60,7 @@ export const registerNegocio = async (negocio, uid, password) =>{
   const newNegocio = await axios.post(`${API_URL}/register-negocio`, 
     {
       usuario_id: newUser.data.id,
-      categoria: negocio.nombre_negocio,
+      categoria_id: negocio.categoria_id,
       nombre: negocio.nombre_negocio,
       descripcion: negocio.descripcion
     }

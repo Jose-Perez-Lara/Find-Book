@@ -15,7 +15,7 @@ class Negocio extends Model
         'usuario_id',
         'nombre',
         'descripcion',
-        'categoria',
+        'categoria_id',
         'imagen_portada',
     ];
 

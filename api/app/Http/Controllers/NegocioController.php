@@ -36,14 +36,14 @@ class NegocioController extends Controller
             'usuario_id' => 'required|exists:users,id',
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'categoria' => 'nullable|exists:categorias,id',
+            'categoria_id' => 'nullable|exists:categorias,id',
         ]);
 
         $negocio = Negocio::create([
             'usuario_id' => $validated['usuario_id'],
             'nombre' => $validated['nombre'],
             'descripcion' => $validated['descripcion'] ?? null,
-            'categoria_id' => $validated['categoria'] ?? null,
+            'categoria_id' => $validated['categoria_id'],
         ]);
 
         return response()->json([

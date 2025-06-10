@@ -48,7 +48,7 @@
             />
             <v-select
               v-model="business.categoria_id"
-              :items="categorias.data"
+              :items="categorias"
               label="Categoría"
               item-title="nombre"
               item-value="id"
@@ -133,7 +133,6 @@
     try {
       const cred = await createUserWithEmailAndPassword(auth, business.value.email, password.value)
       const firebaseUser = cred.user
-
       await registerNegocio(business.value, firebaseUser.uid, password.value)
 
       router.push('/login') 
@@ -144,7 +143,7 @@
 
   onMounted(()=>{
     CategoriaService.getCategorias().then(({data})=>{
-      categorias.value = data 
+      categorias.value = data[0]
     })
   })
 </script>

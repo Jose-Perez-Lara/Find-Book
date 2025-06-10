@@ -51,14 +51,14 @@
 
     <v-container class="py-8" style="background-color: #eaf2f3; border-radius: 1rem;">
       <h2 class="text-h5 mb-6" style="color:#347c88; font-weight: 600;">Negocios Destacados</h2>
-      <v-row dense>
+      <v-row no-gutters justify="start" align="start">
         <v-col
           v-for="negocio in negociosFiltrados"
           :key="negocio.id"
           cols="12" sm="6" md="4"
-          class="d-flex"
+          class="pa-2"
         >
-          <v-card class="business-card rounded-lg elevation-3 d-flex flex-column">
+          <v-card class="business-card rounded-lg elevation-3 d-flex flex-column" style="height: 100%;">
             <v-img
               v-if="negocio.imagen_portada"
               :src="'http://localhost:8000/'+negocio.imagen_portada"
@@ -195,6 +195,9 @@
   }
 
   .business-card {
+    margin-right: 20px;
+    min-width: 250px;
+    max-width: 250px;
     transition: box-shadow 0.3s ease;
   }
   .business-card:hover {

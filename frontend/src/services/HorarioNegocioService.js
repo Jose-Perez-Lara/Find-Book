@@ -31,9 +31,8 @@ export default {
     const actuales = await this.getHorarios(negocioId)
     await Promise.all(actuales.data.map(h => this.eliminarHorario(h.id)))
 
-    const activos = this.getHorarios
     return Promise.all(
-      activos.map(h =>
+      horarios.map(h =>
         this.crearHorario(
           {
           negocio_id: negocioId,
