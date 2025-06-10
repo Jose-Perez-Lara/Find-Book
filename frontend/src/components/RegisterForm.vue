@@ -60,12 +60,12 @@
                     required
                     ></v-text-field>
             
-                    <v-btn type="submit" :disabled="!valid" color="primary"  block >Registrar</v-btn>
+                    <v-btn type="submit" :disabled="!valid" color="#347c88"  block >Registrar</v-btn>
                 </v-form>
 
                 <div class="text-center mt-4 d-flex flex-column">
                 <span>¿Ya tienes cuenta?</span>
-                <RouterLink to="/login" class="register-link" style="color: #1976d2;">
+                <RouterLink to="/login" class="register-link" style="color: #347c88;">
                     Login
                 </RouterLink>
                 </div>

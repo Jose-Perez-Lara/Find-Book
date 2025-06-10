@@ -38,7 +38,7 @@
 
             <v-btn
               class="mt-4"
-              color="primary"
+              color="#347c88"
               block
               @click="submit"
               :disabled="!valid || loading"
@@ -49,7 +49,7 @@
 
             <div class="text-center mt-4 d-flex flex-column">
               <span>¿No tienes una cuenta?</span>
-              <RouterLink to="/register" class="register-link" style="color: #1976d2;">
+              <RouterLink to="/register" class="register-link" style="color: #347c88;">
                 Regístrate
               </RouterLink>
             </div>

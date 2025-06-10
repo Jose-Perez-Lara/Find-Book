@@ -14,7 +14,7 @@ use App\Http\Controllers\FavoritosController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('/register-negocio', [NegocioController::class, 'store']);
 Route::get('/negocios', [NegocioController::class, 'index']);
-Route::resource('negocios', NegocioController::class)->middleware('firebase.auth');
+Route::resource('negocios', NegocioController::class)->except(['index'])->middleware('firebase.auth');
 Route::post('user', [AuthController::class,'getUserByUid'])->middleware('firebase.auth');
 Route::resource('services', ServicesController::class)->middleware('firebase.auth');
 Route::get('categorias', [CategoriasController::class, 'index']);

@@ -84,7 +84,7 @@
               required
             />
 
-            <v-btn type="submit" color="primary" :disabled="!valid" block>Enviar solicitud</v-btn>
+            <v-btn type="submit" color="#347c88" :disabled="!valid" block>Enviar solicitud</v-btn>
           </v-form>
 
           <div class="text-center mt-4 d-flex flex-column">
@@ -150,7 +150,7 @@
 
 <style scoped>
 .register-link {
-  color: #1976d2;
+  color: #347c88;
   text-decoration: none;
   font-weight: 500;
 }
