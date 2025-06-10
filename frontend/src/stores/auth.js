@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
   }),
 
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state) => !!state.user,
     isNegocio: (state) => state.user?.rol_id == 2
   },
 
@@ -18,20 +18,18 @@ export const useAuthStore = defineStore('auth', {
     async login(email, password) {
       const user = await apiLogin(email, password)
       this.token = user.token
-      this.user = user[0]
+      this.initialize(this.token)
     },
 
-    async initialize() {
-      if (this.token) {
+    async initialize(token) {
         try {
-          const user = await getUserWithToken()
+          const user = await getUserWithToken(token)
           this.user = user
           await NegocioService.getNegociosByUser(this.user.id)
           .then(({data})=>this.negocio = data[0])
         } catch (error) {
           console.error('Error al obtener el usuario:', error)
         }
-      }
     },
 
     async loadUser(){

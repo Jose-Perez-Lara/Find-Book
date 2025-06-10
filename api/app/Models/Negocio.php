@@ -33,4 +33,9 @@ class Negocio extends Model
     {
         return $this->belongsTo(Categorias::class);
     }
+
+    public function favoritos()
+    {
+        return $this->hasMany(Favoritos::class, 'negocio_id');
+    }
 }

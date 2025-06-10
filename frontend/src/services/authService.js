@@ -25,14 +25,15 @@ export const login = async (email, password) => {
   return user
 }
 
-export const getUserWithToken = async () =>{
-  const token = await getToken()
-  const response = await axios.post(`${API_URL}/user`, {}, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
-  return response.data.user
+export const getUserWithToken = async (token) =>{
+  if(token){
+    const response = await axios.post(`${API_URL}/user`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    return response.data.user
+  }
 }
 
 export const register = async (user, uid, password) =>{

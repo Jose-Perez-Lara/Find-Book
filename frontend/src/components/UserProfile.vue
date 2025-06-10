@@ -69,6 +69,22 @@
                 <v-list-item-subtitle class="text-subtitle-2">{{ negocio.categoria?.nombre }}</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
+
+            <v-list-item>
+              <v-list-item-content>
+                <v-list-item-title class="text-body-2 font-weight-medium">Ubicación</v-list-item-title>
+                <v-list-item-subtitle class="text-subtitle-2">
+                  <iframe
+                      v-if="negocio?.direccion"
+                      class="w-full rounded-xl"
+                      height="200"
+                      style="border:0"
+                      :src="`https://www.google.com/maps?q=${encodeURIComponent(negocio.direccion)}&output=embed`"
+                      allowfullscreen
+                  ></iframe>
+                </v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-card>
       </v-col>

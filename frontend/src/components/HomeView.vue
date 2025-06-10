@@ -75,6 +75,7 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer />
+              <v-btn @click="selectFavorito(negocio.id)" color="red" :icon="esFavorito(negocio.id) ? 'mdi-heart' : 'mdi-heart-outline'"></v-btn>
               <v-btn color="#347c88" text @click="verNegocio(negocio.id)" class="font-weight-medium">
                 Ver más
               </v-btn>
@@ -91,12 +92,16 @@
   import CategoriaService from '@/services/CategoriaService'
   import NegocioService from '@/services/NegocioService'
   import { useRouter } from 'vue-router'
+  import { useAuthStore } from '@/stores/auth'
+  import FavoritoService from '@/services/FavoritoService'
 
   const categorias = ref([])
   const negocios = ref([])
   const search = ref('')
   const categoriasSeleccionadas = ref([])
   const router = useRouter()
+  const favoritosUser = ref([])
+  const authStore = useAuthStore()
 
   onMounted(async () => {
     const { data: cats } = await CategoriaService.getCategorias()
@@ -104,7 +109,21 @@
 
     const { data: negs } = await NegocioService.getAllNegocios()
     negocios.value = negs || []
+
+    const { data: favoritos } = await FavoritoService.getFavoritos(authStore.user.id)
+    favoritosUser.value = favoritos
   })
+
+  const esFavorito = (negocioId) => {
+    const favorito = favoritosUser.value.find(favorito => favorito.negocio_id = negocioId)
+    return favorito != undefined
+  }
+
+  const selectFavorito = async (negocioId) => {
+    await FavoritoService.toggleFavorito(negocioId, authStore.user.id)
+    const { data: favoritos } = await FavoritoService.getFavoritos(authStore.user.id)
+    favoritosUser.value = favoritos
+  }
 
   function toggleCategoria(id) {
     if (categoriasSeleccionadas.value.includes(id)) {

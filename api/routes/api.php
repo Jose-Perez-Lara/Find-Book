@@ -9,9 +9,11 @@ use App\Http\Controllers\CategoriasController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\HorarioNegocioController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\FavoritosController;
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('/register-negocio', [NegocioController::class, 'create']);
+Route::get('/negocios', [NegocioController::class, 'index']);
 Route::resource('negocios', NegocioController::class)->middleware('firebase.auth');
 Route::post('user', [AuthController::class,'getUserByUid'])->middleware('firebase.auth');
 Route::resource('services', ServicesController::class)->middleware('firebase.auth');
@@ -25,3 +27,5 @@ Route::get('/negocios/{negocio}/comentarios', [ComentarioController::class, 'ind
 Route::post('/negocios/{negocio}/comentarios', [ComentarioController::class, 'store'])->middleware('firebase.auth');
 Route::get('/citas/negocio/{negocioId}/usuario/{userId}', [CitaController::class, 'getByNegocioAndUsuario']);
 Route::post('/negocios/{negocio}/imagen', [NegocioController::class, 'updateImage'])->middleware('firebase.auth');
+Route::get('/favoritos/{userId}', [FavoritosController::class, 'index'])->middleware('firebase.auth');
+Route::post('/favoritos/toggle', [FavoritosController::class, 'toggle'])->middleware('firebase.auth');

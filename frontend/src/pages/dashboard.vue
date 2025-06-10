@@ -29,7 +29,6 @@
     </v-navigation-drawer>
 
     <v-main height="90vh">
-      <!--para movil -->
       <v-app-bar flat color="transparent" elevation="0">
         <v-app-bar-nav-icon v-if="mobile" @click="drawer = !drawer" />
       </v-app-bar>
@@ -46,7 +45,7 @@
   import ServiceList from '@/components/ServiceList.vue';
   import CitasList from '@/components/CitasList.vue';
   import UserProfile from '@/components/UserProfile.vue';
-  import { ref, markRaw, onBeforeMount, computed } from 'vue';
+  import { ref, markRaw, computed } from 'vue';
   import { useDisplay } from 'vuetify';
 
   const drawer = ref(true);
@@ -74,7 +73,4 @@
   const { mdAndDown } = useDisplay();
   const mobile = computed(() => mdAndDown.value);
 
-  onBeforeMount(async () => {
-    await authStore.initialize();
-  });
 </script>

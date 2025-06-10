@@ -29,11 +29,9 @@ export default {
 
   async guardarHorariosMasivo(negocioId, horarios) {
     const actuales = await this.getHorarios(negocioId)
-    console.log(actuales.data)
     await Promise.all(actuales.data.map(h => this.eliminarHorario(h.id)))
 
-    const activos = horarios
-    console.log(activos)
+    const activos = this.getHorarios
     return Promise.all(
       activos.map(h =>
         this.crearHorario(

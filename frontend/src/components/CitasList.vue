@@ -69,7 +69,6 @@
       </v-data-table>
     </v-card-text>
 
-    <!-- Dialogo para editar cita -->
     <v-dialog v-model="mostrarDialogo" max-width="500px">
       <v-card>
         <v-card-title>Editar Cita</v-card-title>
@@ -105,7 +104,6 @@ const mostrarDialogo = ref(false)
 const citaEdit = ref({})
 const authStore = useAuthStore()
 
-// Headers dinámicos según el tipo de usuario
 const headers = computed(() => [
   { title: authStore.isNegocio ? 'Cliente' : 'Negocio', key: 'usuarioRelacionado' },
   { title: 'Servicio', key: 'servicio' },

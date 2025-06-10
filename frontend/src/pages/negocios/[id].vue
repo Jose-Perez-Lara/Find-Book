@@ -230,7 +230,6 @@ async function fetchDisponibles() {
   try {
     const negocioId = negocio.value.id
     const fechaISO = new Date(fechaSeleccionada.value).toISOString().slice(0, 10);
-    console.log(fechaISO)
     const response = await HorarioNegocioService.huecosDisponibles(negocioId, fechaISO, servicioSeleccionado.value.id)
     disponibles.value = response.data.disponibles
   } catch (error) {
