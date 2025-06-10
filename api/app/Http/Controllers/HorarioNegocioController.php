@@ -53,7 +53,7 @@ class HorarioNegocioController extends Controller
 
     public function huecosDisponibles(Request $request, $negocio_id)
     {
-        $fecha = Carbon::parse($request->input('fecha')); 
+        $fecha = Carbon::parse($request->input('fecha'))->startOfDay(); 
         $diaSemana = $fecha->dayOfWeekIso;
 
         $horarios = HorarioNegocio::where('negocio_id', $negocio_id)
@@ -65,43 +65,51 @@ class HorarioNegocioController extends Controller
         }
 
         $citas = Cita::with('servicio')
-            ->where('fecha', $fecha->format('Y-m-d'))
-            ->whereHas('servicio', function ($query) use ($negocio_id) {
+            ->whereDate('fecha', $fecha->toDateString())
+            ->whereHas('servicio', function($query) use ($negocio_id) {
                 $query->where('negocio_id', $negocio_id);
             })
             ->get();
 
-        $disponibles = [];
+        $disponibles = collect(); 
 
         foreach ($horarios as $horario) {
-            $inicio = Carbon::parse($fecha->toDateString() . ' ' . $horario->hora_inicio);
-            $fin = Carbon::parse($fecha->toDateString() . ' ' . $horario->hora_fin);
+            $inicio = Carbon::parse($fecha->format('Y-m-d') . ' ' . $horario->hora_inicio);
+            $fin = Carbon::parse($fecha->format('Y-m-d') . ' ' . $horario->hora_fin);
 
             while ($inicio->lt($fin)) {
                 $bloqueFin = $inicio->copy()->addMinutes(30);
 
-                if ($bloqueFin->gt($fin)) {
-                    break;
-                }
-
-                $haySolape = $citas->contains(function ($cita) use ($inicio, $bloqueFin) {
-                    $citaInicio = Carbon::parse($cita->hora);
-                    $duracion = $cita->servicio->duracion ?? 0;
+                $disponible = true;
+                foreach ($citas as $cita) {
+                    $citaInicio = Carbon::parse($cita->fecha . ' ' . $cita->hora);
+                    $duracion = $cita->servicio->duracion ?? 30;
                     $citaFin = $citaInicio->copy()->addMinutes($duracion);
 
-                    return $citaInicio < $bloqueFin && $citaFin > $inicio;
-                });
+                    if ($citaInicio < $bloqueFin && $citaFin > $inicio) {
+                        $disponible = false;
+                        break;
+                    }
+                }
 
-                if (!$haySolape) {
-                    $disponibles[] = [
+                if ($disponible) {
+                    $disponibles->push([
                         'inicio' => $inicio->format('H:i'),
                         'fin' => $bloqueFin->format('H:i'),
-                    ];
+                        'hora_orden' => $inicio->format('Hi')
+                    ]);
                 }
 
                 $inicio->addMinutes(30);
             }
         }
+
+        $disponibles = $disponibles->sortBy('hora_orden')->values()->map(function($item) {
+            return [
+                'inicio' => $item['inicio'],
+                'fin' => $item['fin']
+            ];
+        });
 
         return response()->json(['disponibles' => $disponibles]);
     }

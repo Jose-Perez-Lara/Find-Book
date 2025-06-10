@@ -19,7 +19,9 @@ class CitaController extends Controller
         if ($negocioId) {
             $citas = Cita::whereHas('servicio', function ($query) use ($negocioId) {
                 $query->where('negocio_id', $negocioId);
-            })->with(['cliente', 'servicio.negocio.usuario']) 
+            })->with(['cliente', 'servicio.negocio.usuario'])
+            ->orderBy('fecha', 'desc')
+            ->orderBy('hora', 'desc') 
             ->get();
         } elseif ($usuarioId) {
             $citas = Cita::where('cliente_id', $usuarioId)

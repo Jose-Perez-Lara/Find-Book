@@ -5,7 +5,6 @@
       <v-data-table
         :headers="headers"
         :items="citas"
-        :items-per-page="5"
         class="elevation-1"
         hide-default-footer
         show-expand
