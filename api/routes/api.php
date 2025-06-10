@@ -28,4 +28,5 @@ Route::post('/negocios/{negocio}/comentarios', [ComentarioController::class, 'st
 Route::get('/citas/negocio/{negocioId}/usuario/{userId}', [CitaController::class, 'getByNegocioAndUsuario']);
 Route::post('/negocios/{negocio}/imagen', [NegocioController::class, 'updateImage'])->middleware('firebase.auth');
 Route::get('/favoritos/{userId}', [FavoritosController::class, 'index'])->middleware('firebase.auth');
+Route::get('/negocios/favoritos/{userId}', [NegocioController::class, 'getFavoritos'])->middleware('firebase.auth');
 Route::post('/favoritos/toggle', [FavoritosController::class, 'toggle'])->middleware('firebase.auth');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Negocio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Favoritos;
 
 class NegocioController extends Controller
 {
@@ -152,6 +153,15 @@ class NegocioController extends Controller
             'status' => 'error',
             'message' => 'No se recibió archivo de imagen'
         ], 400);
+    }
+
+    public function getFavoritos($userId)
+    {
+        $negociosId = Favoritos::where('usuario_id', $userId)->get()->pluck('negocio_id');
+        
+        $favoritos = Negocio::whereIn('id', $negociosId)->get();
+        
+        return response()->json($favoritos, 200);
     }
 
 

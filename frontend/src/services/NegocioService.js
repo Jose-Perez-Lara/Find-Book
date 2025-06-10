@@ -17,6 +17,10 @@ export default {
     return api.get('/negocios')
   },
 
+  getNegociosFavoritos(userId){
+    return api.get('/negocios/favoritos/' + userId)
+  },
+
   uploadImagen(negocioId, file) {
     const formData = new FormData()
     formData.append('imagen', file)
