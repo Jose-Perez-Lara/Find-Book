@@ -4,7 +4,7 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
 
 ## 📌 Descripción
 
-**Find&Book** es una plataforma donde los clientes pueden buscar negocios según su categoría (peluquerías, estética, masajes, etc.), consultar sus servicios y reservar citas de forma rápida y sencilla. Las empresas pueden gestionar sus servicios, personalizar su perfil, y recibir reservas con control total de su disponibilidad. También se incluye un chat interno entre cliente y negocio para mejorar la comunicación.
+**Find&Book** es una plataforma donde los clientes pueden buscar negocios según su categoría (peluquerías, estética, masajes, etc.), consultar sus servicios y reservar citas de forma rápida y sencilla. Las empresas pueden gestionar sus servicios, personalizar su perfil, y recibir reservas con control total de su disponibilidad.
 
 ---
 
@@ -14,6 +14,7 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Buscar negocios
   - Reservar servicios
   - Consultar historial
+  - Marcar negocios como favoritos
 
 - **Empresa**
   - Publicar servicios
@@ -56,8 +57,8 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
   - Registro empresa (requiere validación manual)
 
 - **Panel cliente**
-  - Reservas activas
-  - Historial
+  - Historial de reservas
+  - Negocios favoritos
   - Perfil
 
 - **Panel empresa**
@@ -79,11 +80,13 @@ Aplicación web de reservas para negocios de servicios y clientes, desarrollada 
 ## 📄 Base de datos
 
 Modelo relacional en PostgreSQL. Incluye:
-- Usuarios y roles
+- Usuarios
 - Negocios
 - Servicios
+- Horarios
 - Citas
 - Comentarios
+- Favoritos
 
 
 ## 🧪 Cómo ejecutar el proyecto
